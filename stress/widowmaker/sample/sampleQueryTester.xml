@@ -23,7 +23,6 @@
       let $result := cts:search(fn:collection("_COLLECTION_"), cts:word-query("*","wildcarded"))
       let $count := fn:count($result)
       let $colcount := fn:count(fn:collection("_COLLECTION_"))
-      (: let $_ := xdmp:log(fn:concat("SampleQueryTester Test 1 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :)
       return $count eq $colcount
       ]]></query>
 
@@ -33,7 +32,6 @@
       let $result := cts:search(fn:collection("_COLLECTION_"), cts:element-query(xs:QName("case"),cts:and-query(())))
       let $count := fn:count($result)
       let $colcount := fn:count(fn:collection("_COLLECTION_"))
-      (: let $_ := xdmp:log(fn:concat("SampleQueryTester Test 2 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
       return $count eq $colcount
       ]]></query>
 
@@ -44,7 +42,6 @@
       let $count := fn:count($result)
       let $colcount := fn:count(fn:collection("_COLLECTION_"))
       let $sub := fn:count(cts:uri-match("_COLLECTION_*template-basic.xml"))
-      (: let $_ := xdmp:log(fn:concat("SampleQueryTester Test 3 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
       return $count eq $colcount+(-1)*$sub
       ]]></query>
 
@@ -52,10 +49,9 @@
       xquery version "1.0-ml";
       xdmp:set-request-time-limit(3600),
       let $curyear := fn:year-from-date(fn:current-date())
-      let $result := cts:search(fn:collection("_COLLECTION_"), cts:element-attribute-word-query(xs:QName("case"), xs:QName("updated_at"), fn:concat($curyear,"*"), "wildcarded" ))
+      let $result := cts:search(fn:collection("_COLLECTION_"), cts:element-attribute-word-query(xs:QName("case"), xs:QName("updated_at"), fn:concat("2015","*"), "wildcarded" ))
       let $count := fn:count($result)
       let $colcount := fn:count(fn:collection("_COLLECTION_"))
-      (: let $_ := xdmp:log(fn:concat("SampleQueryTester Test 4 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
       return $count eq $colcount
       ]]></query>
 

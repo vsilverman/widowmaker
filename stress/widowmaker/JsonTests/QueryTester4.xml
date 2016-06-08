@@ -20,7 +20,6 @@
       xdmp:set-request-time-limit(3600),
       let $result := cts:search(fn:collection("_COLLECTION_"), cts:word-query("inhibition"))
       let $count := fn:count($result)
-      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 1 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :)
       return $count eq _LOOP_
       ]]></query>
 
@@ -29,7 +28,6 @@
       xdmp:set-request-time-limit(3600),
       let $result := cts:search(fn:collection("_COLLECTION_"), cts:json-property-value-query("MedlineID",68000011))
       let $count := fn:count($result)
-      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 2 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
       return $count eq _LOOP_
       ]]></query>
 
@@ -38,7 +36,6 @@
       xdmp:set-request-time-limit(3600),
       let $result := cts:search(fn:collection("_COLLECTION_"), cts:json-property-value-query("QualifierName","physiology"))
       let $count := fn:count($result)
-      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 3 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
       return $count eq _LOOP_
       ]]></query>
 

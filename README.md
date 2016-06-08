@@ -39,6 +39,7 @@ Other than the above, there are no known dependency files.
      - Database
      - Forests (created and attached to database)
      - Xdbc server pointing to the above database
+     - A user with admin role
 
 4.3. Build the code by running 'make' from top level directory.
 

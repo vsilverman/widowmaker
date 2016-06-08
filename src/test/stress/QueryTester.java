@@ -122,13 +122,9 @@ public class QueryTester extends XccLoadTester {
             Thread.sleep(5000);
           }
           if (!value.equalsIgnoreCase("true")) {
-            String error = "ERROR running " + query;
+            String error = "ERROR - query does not return expected result " + query;
             s.runQuery("xdmp:log('" + error + "')");
             System.err.println(error);
-            System.err.println("Exiting...");
-            alive = false;
-            Thread.sleep(1000);
-            System.exit(1);
           } 
           logEntry.setPassFail(value.equalsIgnoreCase("true"));
           }

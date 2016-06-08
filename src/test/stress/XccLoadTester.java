@@ -297,7 +297,7 @@ public class XccLoadTester extends XccStressTester {
 		br.close();
 		fr.close();
 	}catch (Exception e) {
-	     ;
+	     e.printStackTrace();
 	}
 	return buf.toString(); 
   }
@@ -315,7 +315,7 @@ public class XccLoadTester extends XccStressTester {
 		fis = null;
 		parser.cleanup();
 	}catch (Exception e) {
-             ;
+             e.printStackTrace();
         }
 	return baos.toString("UTF-8");
   }

@@ -1,0 +1,34 @@
+<h:script xmlns:h="http://marklogic.com/xdmp/harness">
+ <h:test>
+   <h:name>1 load results into db</h:name>
+   <h:comment-expected-result>results loaded</h:comment-expected-result>
+   <h:query><![CDATA[
+        xquery version "1.0-ml";
+        let $x := fn:string(xdmp:version())
+        let $version := concat(substring-before($x,"."),substring-after($x,"."))
+        let $name := concat("multi-statement-diffdelta-",$version,".xml")
+        let $dir1 := fn:string-join((fn:substring("BASELINE",1,1),fn:substring("BASELINE",2,1)),".")
+
+        let $result_batch1 := xdmp:document-get("QA_HOME/scripts/results/batch1.xml")//*:result[1]/*:result-text/text()
+        let $expected_result_batch1 := xdmp:document-get(concat("/project/engineering/qa/perf-test-results/",$dir1,"/BASELINE-batch1.xml"))//*:result[1]/*:result-text/text()
+        let $result_batch10 := xdmp:document-get("QA_HOME/scripts/results/batch10.xml")//*:result[1]/*:result-text/text()
+        let $expected_result_batch10 := xdmp:document-get(concat("/project/engineering/qa/perf-test-results/",$dir1,"/BASELINE-batch10.xml"))//*:result[1]/*:result-text/text()
+        let $result_batch100 := xdmp:document-get("QA_HOME/scripts/results/batch100.xml")//*:result[1]/*:result-text/text()
+        let $expected_result_batch100 := xdmp:document-get(concat("/project/engineering/qa/perf-test-results/",$dir1,"/BASELINE-batch100.xml"))//*:result[1]/*:result-text/text()
+        let $result_batch500 := xdmp:document-get("QA_HOME/scripts/results/batch500.xml")//*:result[1]/*:result-text/text()
+        let $expected_result_batch500 := xdmp:document-get(concat("/project/engineering/qa/perf-test-results/",$dir1,"/BASELINE-batch500.xml"))//*:result[1]/*:result-text/text()
+        let $result_batch1000 := xdmp:document-get("QA_HOME/scripts/results/batch1000.xml")//*:result[1]/*:result-text/text()
+        let $expected_result_batch1000 := xdmp:document-get(concat("/project/engineering/qa/perf-test-results/",$dir1,"/BASELINE-batch1000.xml"))//*:result[1]/*:result-text/text()
+       return
+            xdmp:save(concat("QA_HOME/scripts/results/",$name),
+            <multi-statement-perf-results>
+              <batch-1 expected-time="{$expected_result_batch1}" actual-time="{$result_batch1}" total-time-delta="{ fn:data($result_batch1) div fn:data($expected_result_batch1) * 100 }"/>
+               <batch-10 actual-time="{$result_batch10}" expected-time="{$expected_result_batch10}" total-time-delta="{ fn:data($result_batch10) div fn:data($expected_result_batch10) * 100 }"/> 
+               <batch-100 actual-time="{$result_batch100}" expected-time="{$expected_result_batch100}" total-time-delta="{ fn:data($result_batch100) div fn:data($expected_result_batch100) * 100 }"/> 
+               <batch-500 actual-time="{$result_batch500}" expected-time="{$expected_result_batch500}" total-time-delta="{ fn:data($result_batch500) div fn:data($expected_result_batch500) * 100 }"/> 
+               <batch-1000 actual-time="{$result_batch1000}" expected-time="{$expected_result_batch1000}" total-time-delta="{ fn:data($result_batch1000) div fn:data($expected_result_batch1000) * 100 }"/> 
+            </multi-statement-perf-results>) 
+   ]]></h:query>
+  </h:test>
+</h:script>
+

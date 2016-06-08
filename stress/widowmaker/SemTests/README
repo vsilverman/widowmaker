@@ -1,0 +1,59 @@
+This directory contains two stress tests for a Semantic loads and queries.
+
+
+Setup 1.  Create forests.  These test runs were set up manually.  Given a fresh QA test harness, create the following forests, and set them up as master-replica pairs between the two dnodes:
+
+
+import module namespace admin = "http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+let $c := admin:get-configuration()
+let $c := admin:forest-create($c, "Documents-MA-1", xdmp:host("rh6-intel64-5.marklogic.com"), ())
+let $c := admin:forest-create($c, "Documents-MA-2", xdmp:host("rh6-intel64-5.marklogic.com"), ())
+let $c := admin:forest-create($c, "Documents-RA-1", xdmp:host("rh6-intel64-5.marklogic.com"), ())
+let $c := admin:forest-create($c, "Documents-RA-2", xdmp:host("rh6-intel64-5.marklogic.com"), ())
+let $c := admin:forest-create($c, "Documents-MB-1", xdmp:host("rh5-intel64-8.marklogic.com"), ())
+let $c := admin:forest-create($c, "Documents-MB-2", xdmp:host("rh5-intel64-8.marklogic.com"), ())
+let $c := admin:forest-create($c, "Documents-RB-1", xdmp:host("rh5-intel64-8.marklogic.com"), ())
+let $c := admin:forest-create($c, "Documents-RB-2", xdmp:host("rh5-intel64-8.marklogic.com"), ())
+return admin:save-configuration-without-restart($c)
+
+These forests, attached to the Documents database, should back the QA App Server when setup is complete. When you create the forests, set the data-directory to /space. You can use the REST-API to create the forests. Or set the data-dir to /space using sudo mladmin slink
+
+Setup 2.  Enable the triple index:
+
+xquery version "1.0-ml";
+
+import module namespace admin = "http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+let $c := admin:get-configuration()
+let $c := admin:database-set-triple-index($c, xdmp:database("Documents"), true())
+return admin:save-configuration-without-restart($c)
+
+Setup 3.  Enable the collection lexicon:
+
+xquery version "1.0-ml";
+
+import module namespace admin = "http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+let $c := admin:get-configuration()
+let $c := admin:database-set-collection-lexicon($c, xdmp:database("Documents"), true())
+return admin:save-configuration-without-restart($c)
+
+Setup 4. Detach "Documents" forest from the "Documents" database
+
+Setup 5. Increase the timeouts to 3600 on QAxdbcServer
+
+Running the tests:
+
+The QA trunk was checked out on the enode at /space/stress-tests/qa in order to run these tests.
+
+Test 1 -- 10 concurrent users.  Loops through a mix of queries -- fast ones with low cardinality, and long-running ones with large and small result sets.  It's weighted (I think) too heavily in the long-load range, and loads over time a very large number of triples.  With more concurrent users the large load transactions in this test bog the system down (but it won't fail).
+
+To run Test one run this from the qa/testsripts/regression directory
+
+java -cp /space/stress-test/qa/lib/jbossjta.jar:/space/stress-test/qa/lib/jboss-logging.jar:/space/stress-test/qa/lib/jta-1.1.jar:/space/stress-test/qa/lib/xcc.jar:. -DQA_HOME=/space/stress-test/qa test.stress.StressTest -s /space/stress-test/qa/stress/widowmaker/SemTests/SemStressTests.xml
+
+
+
+Test 2 -- 15-40 concurrent users.  This loads 1/5 of the data from test 1, and performs one somewhat more intensive query than test 1.  Over time this test looks like a more hetrogeneous tests that stresses the system but doesn't have enormous transactions at load time.
+
+To run Test one run this from the qa/testsripts/regression directory
+
+java -cp /space/stress-test/qa/lib/jbossjta.jar:/space/stress-test/qa/lib/jboss-logging.jar:/space/stress-test/qa/lib/jta-1.1.jar:/space/stress-test/qa/lib/xcc.jar:. -DQA_HOME=/space/stress-test/qa test.stress.StressTest -s /space/stress-test/qa/stress/widowmaker/SemTests/SemStressTests2.xml

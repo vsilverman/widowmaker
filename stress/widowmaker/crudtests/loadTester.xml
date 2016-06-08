@@ -1,0 +1,30 @@
+<stresstest>
+	<testtype>loadtester</testtype>
+	<numloops>1</numloops>
+	<toscreen>true</toscreen>
+	<sleeptime>1</sleeptime>
+	<logoption>debug</logoption>
+	<logfilename>auto</logfilename>
+	<outputfile>auto</outputfile>
+</stresstest>
+
+<stresstest>
+	<testtype>loadtester</testtype>
+	<numloops>1</numloops>
+	<toscreen>true</toscreen>
+	<sleeptime>1</sleeptime>
+	<logoption>debug</logoption>
+	<logfilename>auto</logfilename>
+	<outputfile>auto</outputfile>
+	<operations>
+		<create>10000</create>
+		<checkinterval>100</checkinterval>
+		<loaddir>QA_HOME/testdata/foodir</loaddir> <!--optional -->
+		<generatequery numgenerated=100>attr numgenerated denotes how many per exe</generatequery>
+		<createmodule>QA_HOME/app/moduletouse.xqy</createmodule> <!--optional-->
+		<!--default to false becomes true automatically if no load dir or createmodule -->
+		<autogenerate>false</autogenerate>
+		<!--multistatement must be either a commit or rollback type--> 
+		<multistatement batchsize=10 type=commit/>
+	</operations>	  
+</stresstest>

@@ -1,0 +1,9 @@
+<stresstest>
+  <testtype action="query">restquerytester</testtype>
+  <numloops>5</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+</stresstest>

@@ -1,0 +1,1752 @@
+<stresstest>
+  <testtype>inferenceLoadTester</testtype>
+  <numloops>1000</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>5</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1</checkinterval>
+    <loaddir>QA_HOME/testdata/semantics/stress/</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>1</concurrency>
+    <repeat>1</repeat>
+    <queries>
+
+<query index="0"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "pitcher" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:pitcher .
+__SUBJECT__ bb:type   bbr:setup .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="0"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="0"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="1"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "pitcher" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:pitcher .
+__SUBJECT__ bb:type   bbr:mopup .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="1"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="1"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="2"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "pitcher" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:pitcher .
+__SUBJECT__ bb:type   bbr:closer .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="2"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="2"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="3"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "pitcher" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:pitcher .
+__SUBJECT__ bb:type   bbr:starter .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="3"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="3"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="4"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "pitcher" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:pitcher .
+__SUBJECT__ bb:type   bbr:setup .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="4"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="4"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="5"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "catcher" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:catcher .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="5"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="5"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="6"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "infielder" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:firstBaseman .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="6"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="6"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="7"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "infielder" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:secondBaseman .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="7"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="7"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="8"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "infielder" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:thirdBaseman .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="8"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="8"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="9"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "infielder" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:shortStop .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="9"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="9"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="10"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "outfielder" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:leftFielder .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="10"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="10"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="11"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "outfielder" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:centerFielder .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="11"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="11"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="12"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "outfielder" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:rightFielder .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="12"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="12"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="13"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "DH" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:DH .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="13"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="13"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="14"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "outfielder" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:outfielder .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="14"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="14"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="15"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "utility" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:infielder .
+__SUBJECT__ bb:type   bbr:outfielder .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="15"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="15"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="16"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "pitcher" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:pitcher .
+__SUBJECT__ bb:type   bbr:setup .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="16"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="16"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="17"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "outfielder" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:outfielder .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="17"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="17"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="18"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "infielder" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:infielder .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="18"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="18"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="19"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "pitcher" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:pitcher .
+__SUBJECT__ bb:type   bbr:starter .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="19"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="19"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+<query index="20"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+
+INSERT DATA { 
+  GRAPH <__GRAPH__> {
+
+__SUBJECT__ bb:playerID   "__ID__"^^xs:integer .
+__SUBJECT__ bb:number "__NUMBER__"^^xs:integer .
+__SUBJECT__ bb:lastname "__LASTNAME__" .
+__SUBJECT__ bb:firstname  "__FIRSTNAME__" .
+__SUBJECT__ bb:position "pitcher" .
+__SUBJECT__ bb:team __TEAM_RULE__ .
+__SUBJECT__ bb:bats "__BATS__" .
+__SUBJECT__ bb:throws "__THROWS__" .
+__SUBJECT__ bb:weight "__WEIGHT__"^^xs:integer .
+__SUBJECT__ bb:date-of-birth  "__DOB__"^^xs:date .
+__SUBJECT__ bb:type   bbr:pitcher .
+__SUBJECT__ bb:type   bbr:starter .
+}
+}
+
+ '
+let $results := sem:sparql-update($query)
+
+return $results
+
+]]></query>
+
+<verify index="20"><![CDATA[
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  bbr:PlayerStats bbr:TripleCount ?total_triples .
+}
+{
+SELECT (count(?p) as ?total_triples)
+WHERE
+{
+    __SUBJECT__ ?p ?o .
+}
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></verify>
+
+<results index="20"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/rules#> .
+
+p0:PlayerStats  p0:TripleCount  "16"^^<http://www.w3.org/2001/XMLSchema#unsignedLong> .
+
+
+
+]]></results>
+
+
+    </queries>
+  </verification>  
+</stresstest>

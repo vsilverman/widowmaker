@@ -1,0 +1,13 @@
+<stresstest>
+	<testtype binary="true">loadtester</testtype>
+	<numloops>1</numloops>
+	<toscreen>true</toscreen>
+	<sleeptime>1</sleeptime>
+	<logoption>debug</logoption>
+	<logfilename>auto</logfilename>
+	<outputfile>auto</outputfile>
+	<operations>
+		<checkinterval>1</checkinterval>
+		<loaddir>/project/engineering/qa/data/binary-support-3</loaddir> 
+	</operations>	  
+</stresstest>

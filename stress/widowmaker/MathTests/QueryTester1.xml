@@ -1,0 +1,101 @@
+<stresstest>
+  <testtype>querytester</testtype>
+  <numloops>1000</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1000</checkinterval>
+    <loaddir>QA_HOME/testdata/4.0/non-geo-bucket/</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>5</concurrency>
+    <repeat>100000</repeat>
+    <queries>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      let $data := cts:element-values(xs:QName("qa:ulong-1"),(),(),(cts:collection-query("_COLLECTION_")))
+      let $var := xs:decimal(math:variance-p($data))
+      let $_ := xdmp:log(fn:concat("MathIndexTest 1 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($var)),"debug")
+      return $var eq xs:decimal("5399722.09594407")
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      let $data := cts:element-values(xs:QName("qa:double-1"),(),(),(cts:collection-query("_COLLECTION_")))
+      let $var := xs:decimal(math:variance-p($data))
+      let $_ := xdmp:log(fn:concat("MathIndexTest 2 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($var)),"debug")
+      return $var eq xs:decimal("1754095517.42639")
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      let $data1 := cts:element-reference(xs:QName("qa:ulong-1"))
+      let $data2 := cts:element-reference(xs:QName("qa:double-1"))
+      let $array := cts:value-tuples(($data1,$data2),(),(cts:collection-query("_COLLECTION_")))
+      let $covar := xs:decimal(math:covariance-p($array))
+      let $_ := xdmp:log(fn:concat("MathIndexTest 3 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($covar)),"debug")
+      return $covar eq xs:decimal("1721157.19548233") 
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      let $data := cts:element-values(xs:QName("qa:ulong-1"),(),(),(cts:collection-query("_COLLECTION_")))
+      let $median := xs:decimal(math:median($data))
+      let $_ := xdmp:log(fn:concat("MathIndexTest 4 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($median)),"debug")
+      return $median eq xs:decimal("4132")
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      let $data := cts:element-values(xs:QName("qa:double-1"),(),(),(cts:collection-query("_COLLECTION_")))
+      let $median := xs:decimal(math:median($data))
+      let $_ := xdmp:log(fn:concat("MathIndexTest 5 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($median)),"debug")
+      return $median eq xs:decimal("69340.641025641")
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      let $data := cts:element-reference(xs:QName("qa:ulong-1"))
+      let $sum := cts:sum-aggregate($data,(),(cts:collection-query("_COLLECTION_")))
+      let $_ := xdmp:log(fn:concat("MathIndexTest 6 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($sum)),"debug")
+      return $sum eq _LOOP_*10162145 
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      let $data := cts:element-reference(xs:QName("qa:double-1"))
+      let $sum := cts:sum-aggregate($data,(),(cts:collection-query("_COLLECTION_"))) 
+      let $_ := xdmp:log(fn:concat("MathIndexTest 7 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($sum)),"debug")
+      return fn:abs($sum - _LOOP_*1.77765683076923E8) < _LOOP_*0.0001 
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      let $max := cts:aggregate("sampleplugin/sampleplugin","max",(cts:element-reference(xs:QName("qa:ulong-1"))),(),(),(cts:collection-query("_COLLECTION_"))) 
+      let $_ := xdmp:log(fn:concat("MathIndexTest 8 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($max)),"debug")
+      return $max eq xs:decimal("7995")
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      let $max := cts:aggregate("sampleplugin/sampleplugin","max",(cts:element-reference(xs:QName("qa:double-1"))),(),(),(cts:collection-query("_COLLECTION_"))) 
+      let $_ := xdmp:log(fn:concat("MathIndexTest 9 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($max)),"debug")
+      return $max eq xs:decimal("145231.452991453")
+      ]]></query>
+
+    </queries>
+  </verification>  
+</stresstest>

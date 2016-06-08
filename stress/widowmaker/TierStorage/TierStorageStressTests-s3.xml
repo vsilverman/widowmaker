@@ -1,0 +1,8 @@
+<stress-config>
+	<connect-location>QA_HOME/stress/widowmaker/TierStorage/connectInfo-stress-1.xml</connect-location>
+        <min-users>5</min-users>
+        <max-users>10</max-users>
+        <stress-tests>
+                <test-location>QA_HOME/stress/widowmaker/TierStorage/QueryTester1.xml</test-location>
+        </stress-tests>
+</stress-config>

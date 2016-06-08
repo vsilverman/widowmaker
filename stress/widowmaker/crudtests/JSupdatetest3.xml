@@ -1,0 +1,15 @@
+<stresstest>
+	<testtype action="update">crudtester</testtype>
+	<numloops>2</numloops>
+	<toscreen>true</toscreen>
+	<sleeptime>1</sleeptime>
+	<logoption>debug</logoption>
+	<logfilename>auto</logfilename>
+	<outputfile>auto</outputfile>
+	<operations>
+		<language>javascript</language>
+		<checkinterval>1000</checkinterval>
+		<loaddir>QA_HOME/testdata/4.0/geo-bucket/element-attr-pair</loaddir> 
+		<multistatement batchsize="20" type="rollback"/>
+	</operations>	  
+</stresstest>

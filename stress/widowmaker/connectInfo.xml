@@ -1,0 +1,9 @@
+<connectinfo>
+	<server type="master">
+		<port>9085</port> 
+		<username>mluser</username>
+		<password>Stress@ml</password> 
+		<host>localhost</host> 
+		<database>Documents</database>
+	</server> 
+</connectinfo> 

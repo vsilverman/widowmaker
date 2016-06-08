@@ -1,0 +1,8 @@
+<connectinfo>
+        <server type="master">
+                <port>5275</port>
+                <username>admin</username>
+                <password>admin</password>
+                <host>rh55-intel64-43-test-4.marklogic.com</host>
+        </server>
+</connectinfo>

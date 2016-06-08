@@ -1,0 +1,119 @@
+<h:script xmlns:h="http://marklogic.com/xdmp/harness">
+
+	<h:test h:output-result="false"  h:username="admin" h:password="admin">
+		<h:name>setup-1</h:name>
+		<h:comment-expected-result>create new db stressDB</h:comment-expected-result>
+       		<h:query>
+        		<![CDATA[xquery version "1.0-ml";
+	                declare namespace adm="http://marklogic.com/xdmp/admin";
+        	        import module "http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+                	let $config := adm:get-configuration()
+	                let $db := adm:database-create($config, "stressDB", xdmp:database("Security"), xdmp:database("Schemas"))
+        	        return
+                	adm:save-configuration($db)
+	                ]]>
+		</h:query>
+	</h:test>
+	<h:test h:output-result="false"  h:username="admin" h:password="admin">
+		<h:name>setup-2</h:name>
+		<h:comment-expected-result>create a new forest stressF1</h:comment-expected-result>
+	       	<h:query>
+	        	<![CDATA[xquery version "1.0-ml";
+	                declare namespace adm="http://marklogic.com/xdmp/admin";
+	                import module "http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+	                let $config := adm:get-configuration()
+	                let $c := adm:forest-create($config,"stressF1", xdmp:host("HOST1.marklogic.com"), "/space/stressForest/")
+	                return
+	                if (adm:forest-get-name($c,adm:forest-get-id($c,"stressF1")) ne "stressF1" )
+	              	then fn:concat("Error: forest-create")
+	                else adm:save-configuration($c)
+	                ]]>
+		</h:query>
+	</h:test>
+	<h:test h:output-result="false"  h:username="admin" h:password="admin">
+		<h:name>setup-3</h:name>
+		<h:comment-expected-result>create a new forest stressF2</h:comment-expected-result>
+		<h:query>
+			<![CDATA[xquery version "1.0-ml";
+			declare namespace adm="http://marklogic.com/xdmp/admin";
+			import module "http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+			let $config := adm:get-configuration()
+			let $c := adm:forest-create($config,"stressF2", xdmp:host("HOST2.marklogic.com"), "/space/stressForest/")
+			return
+			if (adm:forest-get-name($c,adm:forest-get-id($c,"stressF2")) ne "stressF2" )
+			then fn:concat("Error: forest-create")
+			else adm:save-configuration($c)
+			]]>
+		</h:query>
+	</h:test>
+	<h:test h:output-result="false"  h:username="admin" h:password="admin">
+		<h:name>setup-4</h:name>
+		<h:comment-expected-result>create a new forest stressF3</h:comment-expected-result>
+		<h:query>
+			<![CDATA[xquery version "1.0-ml";
+			declare namespace adm="http://marklogic.com/xdmp/admin";
+			import module "http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+			let $config := adm:get-configuration()
+			let $c := adm:forest-create($config,"stressF3", xdmp:host("HOST3.marklogic.com"), "/space/stressForest/")
+			return
+			if (adm:forest-get-name($c,adm:forest-get-id($c,"stressF3")) ne "stressF3" )
+			then fn:concat("Error: forest-create")
+			else adm:save-configuration($c)
+			]]>
+		</h:query>
+	</h:test>
+	<h:test h:type="setup" h:output-result="false" h:username="admin" h:password="admin" >
+		<h:name>setup-5</h:name>
+		<h:comment-expected-result>attach forests to the database</h:comment-expected-result>
+		<h:query>
+			<![CDATA[xquery version "1.0-ml";
+			import module namespace admin="http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+			let $config := admin:get-configuration()
+			let $dbid := admin:database-get-id($config, "stressDB")
+			let $asid := admin:forest-get-id($config, "stressF1")
+			let $asid2 := admin:forest-get-id($config, "stressF2")
+			let $asid3 := admin:forest-get-id($config, "stressF3")
+			let $c := admin:database-attach-forest($config, $dbid, $asid)
+			let $c := admin:database-attach-forest($c, $dbid, $asid2)
+			let $c := admin:database-attach-forest($c, $dbid, $asid3)
+			return
+			admin:save-configuration($c)
+		]]>
+		</h:query>
+	</h:test>
+	<h:test h:type="setup" h:output-result="false" h:username="admin" h:password="admin">
+		<h:name>setup-6</h:name>
+		<h:comment-expected-result>create xdbc server  </h:comment-expected-result>
+		<h:query>
+			<![CDATA[xquery version "1.0-ml";
+			declare namespace adm="http://marklogic.com/xdmp/admin";
+			import module "http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+			let $hostName := xdmp:host()
+			let $database := xdmp:database("stressDB")
+			let $config := adm:get-configuration()
+			let $defaultgroup := adm:host-get-group($config, $hostName)
+			let $c := adm:xdbc-server-create($config,$defaultgroup,"WidowXDBC","QA_HOME/app",4345,0,$database)
+			return adm:save-configuration($c)
+			]]>
+		</h:query>
+	</h:test>
+	<h:test h:type="setup" h:output-result="false">
+		<h:name>setup-7</h:name>
+		<h:comment-expected-result>associate database with xdbc server</h:comment-expected-result>
+		<h:query>
+			<![CDATA[xquery version "1.0-ml";
+			import module namespace admin="http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+			let $config := admin:get-configuration()
+			let $dbid := admin:database-get-id($config, "stressDB")
+			let $hostName := xdmp:host()
+			let $defaultgroup := admin:host-get-group($config, $hostName)
+			let $xdbcid := admin:appserver-get-id($config, $defaultgroup, "WidowXDBC")
+			let $c := admin:appserver-set-database($config, $xdbcid, $dbid)
+			return
+			if (admin:appserver-get-database($c, $xdbcid) ne $dbid)
+			then fn:concat("Error: xdbc-server-database")
+			else admin:save-configuration($c)
+			]]>
+		</h:query>
+	</h:test>
+</h:script>

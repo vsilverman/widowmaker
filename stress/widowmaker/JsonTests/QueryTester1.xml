@@ -1,0 +1,91 @@
+<stresstest>
+  <testtype json="true">querytester</testtype>
+  <numloops>1000</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1000</checkinterval>
+    <loaddir>QA_HOME/testdata/jsonStress/data1/</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>10</concurrency>
+    <repeat>1000</repeat>
+    <queries>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      xdmp:set-request-time-limit(3600),
+      let $result := cts:search(fn:collection("_COLLECTION_"), cts:word-query("inhibition"))
+      let $count := fn:count($result)
+      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 1 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :)
+      return $count eq _LOOP_
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      xdmp:set-request-time-limit(3600),
+      let $result := cts:search(fn:collection("_COLLECTION_"), cts:json-property-value-query("MedlineID",68000011))
+      let $count := fn:count($result)
+      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 2 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
+      return $count eq _LOOP_
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      xdmp:set-request-time-limit(3600),
+      let $result := cts:search(fn:collection("_COLLECTION_"), cts:json-property-value-query("QualifierName","physiology"))
+      let $count := fn:count($result)
+      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 3 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
+      return $count eq _LOOP_
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      xdmp:set-request-time-limit(3600),
+      let $result := cts:search(fn:collection("_COLLECTION_"), cts:json-property-range-query("PMID","<", 5000000))
+      let $count := fn:count($result)
+      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 4 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
+      return $count eq 3*_LOOP_
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      xdmp:set-request-time-limit(3600),
+      let $result := cts:search(fn:collection("_COLLECTION_"), cts:json-property-range-query("Country","<=", "ENGLAND"))
+      let $count := fn:count($result)
+      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 5 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
+      return $count eq 5*_LOOP_
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      xdmp:set-request-time-limit(3600),
+      let $result := cts:search(fn:collection("_COLLECTION_"), cts:path-range-query("MedlineCitation//JournalIssue/PubDate/Year", "<", 1965))
+      let $count := fn:count($result)
+      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 6 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :)
+      return $count eq 5*_LOOP_
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      xdmp:set-request-time-limit(3600),
+      let $result := cts:search(fn:collection("_COLLECTION_"), cts:path-range-query("/MedlineCitation/Article/Journal/ISSN", ">=", "0065-2490"))
+      let $count := fn:count($result)
+      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 7 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
+      return $count eq 5*_LOOP_
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      xdmp:set-request-time-limit(3600),
+      let $result := cts:search(fn:collection("_COLLECTION_"), cts:field-value-query("ISSN", "0012-1606"))
+      let $count := fn:count($result)
+      (: let $_ := xdmp:log(fn:concat("JSON QueryTester1 Test 8 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :) 
+      return $count eq 5*_LOOP_
+      ]]></query>
+    </queries>
+  </verification>  
+</stresstest>

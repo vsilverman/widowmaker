@@ -1,0 +1,8 @@
+<stress-config>
+	<connect-location>QA_HOME/stress/widowmaker/connectInfo.xml</connect-location>
+        <min-users>10</min-users>
+        <max-users>10</max-users>
+        <stress-tests>
+            <test-location>QA_HOME/stress/widowmaker/SemTests/UpdateQueryTester1.s2.xml</test-location>
+        </stress-tests>
+</stress-config>

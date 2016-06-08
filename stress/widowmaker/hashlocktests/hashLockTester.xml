@@ -1,0 +1,13 @@
+<stresstest>
+	<testtype>hashlocktester</testtype>
+	<numloops>1</numloops>
+	<toscreen>true</toscreen>
+	<sleeptime>1</sleeptime>
+	<logoption>debug</logoption>
+	<logfilename>auto</logfilename>
+	<outputfile>auto</outputfile>
+	<operations>
+		<numuris>1000</numuris>
+		<numthreads>100</numthreads>
+	</operations>	  
+</stresstest>

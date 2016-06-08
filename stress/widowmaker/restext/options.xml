@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<options xmlns="http://marklogic.com/appservices/search">
+  <constraint name="coll">
+    <collection/>
+  </constraint>
+
+  <values name="key3">
+    <range type="xs:int">
+      <element ns="" name="key3"/>
+    </range>
+    <aggregate apply="avg"/>
+  </values>
+</options>

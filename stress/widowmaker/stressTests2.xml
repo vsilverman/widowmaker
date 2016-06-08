@@ -1,0 +1,12 @@
+<stress-config>
+	<connect-location>QA_HOME/stress/widowmaker/connectInfoIncrBkp.xml</connect-location>
+        <min-users>5</min-users>
+        <max-users>5</max-users>
+        <stress-tests>
+                <test-location>QA_HOME/stress/widowmaker/loadtests/loadTester1.xml</test-location>
+                <test-location>QA_HOME/stress/widowmaker/loadtests/loadTester1.xml</test-location>
+                <test-location>QA_HOME/stress/widowmaker/crudtests/deletetest1.xml</test-location>
+                <test-location>QA_HOME/stress/widowmaker/crudtests/updatetest1.xml</test-location>
+                <test-location>QA_HOME/stress/widowmaker/binaryloadtests/binaryloadtest2.xml</test-location>
+        </stress-tests>
+</stress-config>

@@ -1,0 +1,24 @@
+<stresstest>
+  <testtype>querytester</testtype>
+  <numloops>1</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>10</checkinterval>
+    <loaddir>QA_HOME/stress/widowmaker/SanityTests/empty</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>1</concurrency>
+    <repeat>1</repeat>
+    <queries>
+
+      <query><![CDATA[
+      xdmp:log("Hello, JAVA Stress Test Framework."), fn:true()
+      ]]></query>
+
+    </queries>
+  </verification>  
+</stresstest>

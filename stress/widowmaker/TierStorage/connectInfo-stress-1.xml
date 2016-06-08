@@ -1,0 +1,8 @@
+<connectinfo>
+	<server type="master">
+		<port>5275</port> 
+		<username>admin</username>
+		<password>admin</password> 
+		<host>rh6-intel64-80-ts-stress-1.marklogic.com</host> 
+	</server> 
+</connectinfo> 

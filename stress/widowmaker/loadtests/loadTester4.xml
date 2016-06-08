@@ -1,0 +1,13 @@
+<stresstest>
+	<testtype>loadtester</testtype>
+	<numloops>5</numloops>
+	<toscreen>true</toscreen>
+	<sleeptime>1</sleeptime>
+	<logoption>debug</logoption>
+	<logfilename>auto</logfilename>
+	<outputfile>auto</outputfile>
+	<operations>
+		<checkinterval>1000</checkinterval>
+		<loaddir>QA_HOME/scripts/tests</loaddir> 
+	</operations>	  
+</stresstest>

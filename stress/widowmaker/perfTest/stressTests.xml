@@ -1,0 +1,18 @@
+<stress-config>
+	<connect-location>QA_HOME/stress/widowmaker/perfTest/connectInfo.xml</connect-location>
+        <min-users>5</min-users>
+        <max-users>10</max-users>
+        <setup-locations>
+                <setup-location>QA_HOME/stress/widowmaker/loadtests/loadTester1.xml</setup-location>
+        </setup-locations>
+        <stress-tests>
+               <test-location>QA_HOME/stress/widowmaker/perfTest/load/load-batch1.xml</test-location>
+               <test-location>QA_HOME/stress/widowmaker/perfTest/load/load-batch1.xml</test-location>
+               <test-location>QA_HOME/stress/widowmaker/perfTest/load/load-batch1.xml</test-location>
+               <test-location>QA_HOME/stress/widowmaker/perfTest/load/load-batch1.xml</test-location>
+               <test-location>QA_HOME/stress/widowmaker/perfTest/load/load-batch1.xml</test-location>
+               <test-location>QA_HOME/stress/widowmaker/perfTest/load/load-batch1.xml</test-location>
+               <test-location>QA_HOME/stress/widowmaker/perfTest/load/load-batch1.xml</test-location>
+               <test-location>QA_HOME/stress/widowmaker/perfTest/load/load-batch1.xml</test-location>
+        </stress-tests>
+</stress-config>

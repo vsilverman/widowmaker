@@ -1,0 +1,1981 @@
+<stresstest>
+  <testtype>inferenceTester</testtype>
+  <numloops>100</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1</checkinterval>
+    <loaddir>QA_HOME/testdata/semantics/stress/</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>1</concurrency>
+    <repeat>1</repeat>
+    <queries>
+
+      <query index="16"><![CDATA[
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("rdfs-full.rules", "rdfs.rules", "range.rules", "domain.rules", "subClassOf.rules", "subPropertyOf.rules", "baseball.rules"),
+  (sem:store(), ()))
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+construct {
+  ?s bbr:coachType ?long_name .
+  ?s bb:firstname ?firstname .
+  ?s bb:lastname ?lastname .
+  ?s bb:team ?team_name .
+  ?s bb:staffPositions ?staff_pos .
+  ?s bb:staffDesc ?staff_desc .
+}
+WHERE
+{ 
+    ?s rdf:type bbr:coachingStaff .
+    ?s bb:firstname ?firstname .
+    ?s bb:lastname ?lastname .
+    ?s bbr:coachingRole ?role .
+    ?s bb:team ?team_name .
+    ?role rdfs:label ?staff_desc .
+    ?s ?p ?o .
+
+    filter (?role = bbr:manager)
+}
+order by ?s ?p
+ '
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+      ]]></query>
+
+
+
+      <results index="16"><![CDATA[
+
+
+
+@prefix p1: <http://marklogic.com/baseball/rules#> .
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+<http://marklogic.com/baseball/players#2656>
+                p0:firstname    "Ned" ;
+                p0:lastname     "Yost" ;
+                p0:team         p1:Royals ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1456>
+                p0:firstname    "Lloyd" ;
+                p0:lastname     "McClendon" ;
+                p0:team         p1:Mariners ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1157>
+                p0:firstname    "Chip" ;
+                p0:lastname     "Hale" ;
+                p0:team         p1:DBacks ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1761>
+                p0:firstname    "Matt" ;
+                p0:lastname     "Williams" ;
+                p0:team         p1:Nationals ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#561>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Scoscia" ;
+                p0:team         p1:Angels ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2057>
+                p0:firstname    "Clint" ;
+                p0:lastname     "Hurdle" ;
+                p0:team         p1:Pirates ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1356>
+                p0:firstname    "Terry" ;
+                p0:lastname     "Francona" ;
+                p0:team         p1:Indians ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1558>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Redmond" ;
+                p0:team         p1:Marlins ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2357>
+                p0:firstname    "John" ;
+                p0:lastname     "Farrell" ;
+                p0:team         p1:RedSox ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1954>
+                p0:firstname    "Ryne" ;
+                p0:lastname     "Sandberg" ;
+                p0:team         p1:Phillies ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#59>
+                p0:firstname    "Bob" ;
+                p0:lastname     "Melvin" ;
+                p0:team         p1:Athletics ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2260>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:team         p1:Rays ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2757>
+                p0:firstname    "Paul" ;
+                p0:lastname     "Molitor" ;
+                p0:team         p1:Twins ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#659>
+                p0:firstname    "A.J." ;
+                p0:lastname     "Hinch" ;
+                p0:team         p1:Astros ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#157>
+                p0:firstname    "Brad" ;
+                p0:lastname     "Ausmus" ;
+                p0:team         p1:Tigers ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2161>
+                p0:firstname    "Jeff" ;
+                p0:lastname     "Banister" ;
+                p0:team         p1:Rangers ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2459>
+                p0:firstname    "Bryan" ;
+                p0:lastname     "Price" ;
+                p0:team         p1:Reds ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2561>
+                p0:firstname    "Walt" ;
+                p0:lastname     "Weiss" ;
+                p0:team         p1:Rockies ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#761>
+                p0:firstname    "John" ;
+                p0:lastname     "Gibbons" ;
+                p0:team         p1:BlueJays ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1655>
+                p0:firstname    "Terry" ;
+                p0:lastname     "Collins" ;
+                p0:team         p1:Mets ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1058>
+                p0:firstname    "Joe" ;
+                p0:lastname     "Maddon" ;
+                p0:team         p1:Cubs ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#356>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Matheny" ;
+                p0:team         p1:Cardinals ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1258>
+                p0:firstname    "Bruce" ;
+                p0:lastname     "Bochy" ;
+                p0:team         p1:Giants ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#257>
+                p0:firstname    "Don" ;
+                p0:lastname     "Mattingly" ;
+                p0:team         p1:Dodgers ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#857>
+                p0:firstname    "Fredi" ;
+                p0:lastname     "Gonzalez" ;
+                p0:team         p1:Braves ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1855>
+                p0:firstname    "Buck" ;
+                p0:lastname     "Showalter" ;
+                p0:team         p1:Orioles ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#957>
+                p0:firstname    "Ron" ;
+                p0:lastname     "Roenicke" ;
+                p0:team         p1:Brewers ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2955>
+                p0:firstname    "Joe" ;
+                p0:lastname     "Girardi" ;
+                p0:team         p1:Yankees ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2857>
+                p0:firstname    "Robin" ;
+                p0:lastname     "Ventura" ;
+                p0:team         p1:WhiteSox ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#461>
+                p0:firstname    "Bud" ;
+                p0:lastname     "Black" ;
+                p0:team         p1:Padres ;
+                p0:staffDesc    "Manager" .
+
+
+]]></results>
+
+      <query index="17"><![CDATA[
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("rdfs-full.rules", "rdfs.rules", "range.rules", "domain.rules", "subClassOf.rules", "subPropertyOf.rules", "baseball.rules"),
+  (sem:store(), ()))
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+construct {
+  ?s bbr:coachType ?long_name .
+  ?s bb:firstname ?firstname .
+  ?s bb:lastname ?lastname .
+  ?s bb:staffPositions ?staff_pos .
+  ?s bb:staffDesc ?staff_desc .
+}
+WHERE
+{ 
+    ?s rdf:type bbr:coachingStaff .
+    ?s bb:firstname ?firstname .
+    ?s bb:lastname ?lastname .
+    ?s bbr:coachingRole ?role .
+    ?s bb:team ?team .
+    ?role rdfs:label ?staff_desc .
+    ?s ?p ?o .
+#  filter (?team = "Royals")
+}
+order by ?team
+
+ '
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+      ]]></query>
+
+
+
+      <results index="17"><![CDATA[
+
+
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+<http://marklogic.com/baseball/players#1766>
+                p0:firstname    "Bob" ;
+                p0:lastname     "Henley" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#961>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#1066>
+                p0:firstname    "Chad" ;
+                p0:lastname     "Noble" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1165>
+                p0:firstname    "Henry" ;
+                p0:lastname     "Blanco" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#2565>
+                p0:firstname    "Eric" ;
+                p0:lastname     "Young" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#469>
+                p0:firstname    "Justin" ;
+                p0:lastname     "Hatcher" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#762>
+                p0:firstname    "DeMarlo" ;
+                p0:lastname     "Hale" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1265>
+                p0:firstname    "Mark" ;
+                p0:lastname     "Gardner" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2364>
+                p0:firstname    "Dana" ;
+                p0:lastname     "LeVangie" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1364>
+                p0:firstname    "Armando" ;
+                p0:lastname     "Camacaro" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#265>
+                p0:firstname    "Rob" ;
+                p0:lastname     "Flippo" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#2763>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#359>
+                p0:firstname    "Bill" ;
+                p0:lastname     "Mueller" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1060>
+                p0:firstname    "John" ;
+                p0:lastname     "Mallee" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#59>
+                p0:firstname    "Bob" ;
+                p0:lastname     "Melvin" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2268>
+                p0:firstname    "Scott" ;
+                p0:lastname     "Cursi" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1463>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Rojas" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2166>
+                p0:firstname    "Tony" ;
+                p0:lastname     "Beasley" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1655>
+                p0:firstname    "Terry" ;
+                p0:lastname     "Collins" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#662>
+                p0:firstname    "Alan" ;
+                p0:lastname     "Zinter" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2064>
+                p0:firstname    "Euclides" ;
+                p0:lastname     "Rojas" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#861>
+                p0:firstname    "Terry" ;
+                p0:lastname     "Pendleton" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#257>
+                p0:firstname    "Don" ;
+                p0:lastname     "Mattingly" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1358>
+                p0:firstname    "Ty" ;
+                p0:lastname     "Van Burkleo" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1661>
+                p0:firstname    "Dan" ;
+                p0:lastname     "Warthen" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#2955>
+                p0:firstname    "Joe" ;
+                p0:lastname     "Girardi" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2758>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2857>
+                p0:firstname    "Robin" ;
+                p0:lastname     "Ventura" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2962>
+                p0:firstname    "Gary" ;
+                p0:lastname     "Tuck" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1958>
+                p0:firstname    "Juan" ;
+                p0:lastname     "Samuel" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#2262>
+                p0:firstname    "Derek" ;
+                p0:lastname     "Shelton" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2664>
+                p0:firstname    "Pedro" ;
+                p0:lastname     "Grifol" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#361>
+                p0:firstname    "Jose" ;
+                p0:lastname     "Oquendo" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1656>
+                p0:firstname    "Bob" ;
+                p0:lastname     "Geren" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#661>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Hudgens" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1061>
+                p0:firstname    "Eric" ;
+                p0:lastname     "Hinske" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1761>
+                p0:firstname    "Matt" ;
+                p0:lastname     "Williams" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1860>
+                p0:firstname    "Bobby" ;
+                p0:lastname     "Dickerson" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1957>
+                p0:firstname    "John" ;
+                p0:lastname     "Mizerock" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2467>
+                p0:firstname    "Nilson" ;
+                p0:lastname     "Antigua" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1259>
+                p0:firstname    "Ron" ;
+                p0:lastname     "Wotus" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1160>
+                p0:firstname    "Mark" ;
+                p0:lastname     "Grace" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2357>
+                p0:firstname    "John" ;
+                p0:lastname     "Farrell" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2365>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1562>
+                p0:firstname    "Perry" ;
+                p0:lastname     "Hill" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#862>
+                p0:firstname    "Bo" ;
+                p0:lastname     "Porter" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#2263>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2461>
+                p0:firstname    "Don" ;
+                p0:lastname     "Long" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#64>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Gallego" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1457>
+                p0:firstname    "Trent" ;
+                p0:lastname     "Jewett" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2956>
+                p0:firstname    "Tony" ;
+                p0:lastname     "Pena" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#565>
+                p0:firstname    "Alfredo" ;
+                p0:lastname     "Griffin" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#358>
+                p0:firstname    "John" ;
+                p0:lastname     "Mabry" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2757>
+                p0:firstname    "Paul" ;
+                p0:lastname     "Molitor" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2161>
+                p0:firstname    "Jeff" ;
+                p0:lastname     "Banister" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2663>
+                p0:firstname    "Doug" ;
+                p0:lastname     "Henry" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2963>
+                p0:firstname    "Roman" ;
+                p0:lastname     "Rodriguez" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#463>
+                p0:firstname    "Alonzo" ;
+                p0:lastname     "Powell" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#667>
+                p0:firstname    "Javier" ;
+                p0:lastname     "Bracamonte" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#960>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2862>
+                p0:firstname    "Joe" ;
+                p0:lastname     "McEwing" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#2658>
+                p0:firstname    "Dale" ;
+                p0:lastname     "Sveum" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1264>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Righetti" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#2564>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#163>
+                p0:firstname    "Jeff" ;
+                p0:lastname     "Jones" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#768>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1363>
+                p0:firstname    "Kevin" ;
+                p0:lastname     "Cash" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2167>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Maddux" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#2264>
+                p0:firstname    "George" ;
+                p0:lastname     "Hendrick" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#561>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Scoscia" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#567>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Butcher" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#666>
+                p0:firstname    "Craig" ;
+                p0:lastname     "Bjornson" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1563>
+                p0:firstname    "Brett" ;
+                p0:lastname     "Butler" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#2462>
+                p0:firstname    "Lee" ;
+                p0:lastname     "Tinsley" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2065>
+                p0:firstname    "Heberto" ;
+                p0:lastname     "Andrade" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#164>
+                p0:firstname    "Mick" ;
+                p0:lastname     "Billmeyer" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1356>
+                p0:firstname    "Terry" ;
+                p0:lastname     "Francona" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1360>
+                p0:firstname    "Sandy" ;
+                p0:lastname     "Alomar Jr" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#1462>
+                p0:firstname    "Rick" ;
+                p0:lastname     "Waits" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#363>
+                p0:firstname    "Blaise" ;
+                p0:lastname     "Ilsley" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2858>
+                p0:firstname    "Mark" ;
+                p0:lastname     "Parent" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#258>
+                p0:firstname    "Tim" ;
+                p0:lastname     "Wallach" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1767>
+                p0:firstname    "Steve" ;
+                p0:lastname     "McCatty" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#1657>
+                p0:firstname    "Kevin" ;
+                p0:lastname     "Long" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#462>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Roberts" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1959>
+                p0:firstname    "Pete" ;
+                p0:lastname     "Mackanin" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#159>
+                p0:firstname    "Wally" ;
+                p0:lastname     "Joyner" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2363>
+                p0:firstname    "Juan" ;
+                p0:lastname     "Nieves" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#2961>
+                p0:firstname    "Larry" ;
+                p0:lastname     "Rothschild" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#468>
+                p0:firstname    "Willie" ;
+                p0:lastname     "Blair" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2765>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#766>
+                p0:firstname    "Luis" ;
+                p0:lastname     "Rivera" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#264>
+                p0:firstname    "Chuck" ;
+                p0:lastname     "Crimm" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#66>
+                p0:firstname    "Scott" ;
+                p0:lastname     "Emerson" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#965>
+                p0:firstname    "Marcus" ;
+                p0:lastname     "Hanel" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1158>
+                p0:firstname    "Glenn" ;
+                p0:lastname     "Sherlock" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1459>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1960>
+                p0:firstname    "Bob" ;
+                p0:lastname     "McClure" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#2566>
+                p0:firstname    "Stu" ;
+                p0:lastname     "Cole" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#2861>
+                p0:firstname    "Daryl" ;
+                p0:lastname     "Boston" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#1064>
+                p0:firstname    "Chris" ;
+                p0:lastname     "Bosio" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#1855>
+                p0:firstname    "Buck" ;
+                p0:lastname     "Showalter" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#60>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Aldrete" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#263>
+                p0:firstname    "Rick" ;
+                p0:lastname     "Honeycutt" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#357>
+                p0:firstname    "David" ;
+                p0:lastname     "Bell" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2659>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2060>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2165>
+                p0:firstname    "Hector" ;
+                p0:lastname     "Ortiz" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#767>
+                p0:firstname    "Pete" ;
+                p0:lastname     "Walker" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#1461>
+                p0:firstname    "Rich" ;
+                p0:lastname     "Donelly" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1357>
+                p0:firstname    "Brad" ;
+                p0:lastname     "Mills" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2662>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Eiland" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#1660>
+                p0:firstname    "Tim" ;
+                p0:lastname     "Teufel" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#467>
+                p0:firstname    "Darren" ;
+                p0:lastname     "Balsley" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#566>
+                p0:firstname    "Gary" ;
+                p0:lastname     "DiSarcina" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1263>
+                p0:firstname    "Tim" ;
+                p0:lastname     "Flannery" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1065>
+                p0:firstname    "Lester" ;
+                p0:lastname     "Strode" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1856>
+                p0:firstname    "John" ;
+                p0:lastname     "Russell" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2860>
+                p0:firstname    "Harold" ;
+                p0:lastname     "Baines" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#761>
+                p0:firstname    "John" ;
+                p0:lastname     "Gibbons" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1161>
+                p0:firstname    "Dave" ;
+                p0:lastname     "McKay" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#1762>
+                p0:firstname    "Randy" ;
+                p0:lastname     "Knorr" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1564>
+                p0:firstname    "Chuck" ;
+                p0:lastname     "Hernandez" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#1768>
+                p0:firstname    "Matthew" ;
+                p0:lastname     "LeCroy" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2463>
+                p0:firstname    "Billy" ;
+                p0:lastname     "Hatcher" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#2764>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#65>
+                p0:firstname    "Curt" ;
+                p0:lastname     "Young" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#957>
+                p0:firstname    "Ron" ;
+                p0:lastname     "Roenicke" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1159>
+                p0:firstname    "Turner" ;
+                p0:lastname     "Ward" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1458>
+                p0:firstname    "Howard" ;
+                p0:lastname     "Johnson" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#362>
+                p0:firstname    "Derek" ;
+                p0:lastname     "Lilliquist" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#660>
+                p0:firstname    "Trey" ;
+                p0:lastname     "Hillman" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#863>
+                p0:firstname    "Roger" ;
+                p0:lastname     "McDowell" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#2358>
+                p0:firstname    "Torey" ;
+                p0:lastname     "Lovullo" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#62>
+                p0:firstname    "Marcus" ;
+                p0:lastname     "Jensen" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#765>
+                p0:firstname    "Tim" ;
+                p0:lastname     "Leiper" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#1862>
+                p0:firstname    "Dom" ;
+                p0:lastname     "Chiti" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2562>
+                p0:firstname    "Tom" ;
+                p0:lastname     "Runnells" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1261>
+                p0:firstname    "Joe" ;
+                p0:lastname     "Lefebvre" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2061>
+                p0:firstname    "Nick" ;
+                p0:lastname     "Leyva" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#2568>
+                p0:firstname    "Darren" ;
+                p0:lastname     "Holmes" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2760>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1063>
+                p0:firstname    "Gary" ;
+                p0:lastname     "Jones" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#964>
+                p0:firstname    "Lee" ;
+                p0:lastname     "Tunnell" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1763>
+                p0:firstname    "Rick" ;
+                p0:lastname     "Schu" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1961>
+                p0:firstname    "Rod" ;
+                p0:lastname     "Nichols" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2163>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Magadan" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2359>
+                p0:firstname    "Chili" ;
+                p0:lastname     "Davis" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#262>
+                p0:firstname    "Lorenzo" ;
+                p0:lastname     "Bundy" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#2865>
+                p0:firstname    "Mark" ;
+                p0:lastname     "Salas" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#165>
+                p0:firstname    "Jeff" ;
+                p0:lastname     "Kunkel" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#2169>
+                p0:firstname    "Josh" ;
+                p0:lastname     "Frasier" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#2265>
+                p0:firstname    "Tom" ;
+                p0:lastname     "Foley" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1361>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Sarbaugh" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#356>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Matheny" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2661>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Jirschele" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1162>
+                p0:firstname    "Andy" ;
+                p0:lastname     "Green" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1955>
+                p0:firstname    "Larry" ;
+                p0:lastname     "Bowa" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#158>
+                p0:firstname    "Gene" ;
+                p0:lastname     "Lamont" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2958>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#563>
+                p0:firstname    "Don" ;
+                p0:lastname     "Baylor" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#665>
+                p0:firstname    "Brent" ;
+                p0:lastname     "Strom" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#1460>
+                p0:firstname    "Chris" ;
+                p0:lastname     "Woodward" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#1559>
+                p0:firstname    "Rob" ;
+                p0:lastname     "Leary" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1658>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#461>
+                p0:firstname    "Bud" ;
+                p0:lastname     "Black" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1157>
+                p0:firstname    "Chip" ;
+                p0:lastname     "Hale" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1659>
+                p0:firstname    "Tom" ;
+                p0:lastname     "Goodwin" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#859>
+                p0:firstname    "Kevin" ;
+                p0:lastname     "Seitzer" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#67>
+                p0:firstname    "Casey" ;
+                p0:lastname     "Chavez" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1769>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#2059>
+                p0:firstname    "Jeff" ;
+                p0:lastname     "Branson" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2859>
+                p0:firstname    "Todd" ;
+                p0:lastname     "Steverson" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#364>
+                p0:firstname    "Jamie" ;
+                p0:lastname     "Pogue" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1163>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Harkey" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#1565>
+                p0:firstname    "Reid" ;
+                p0:lastname     "Cornelius" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1954>
+                p0:firstname    "Ryne" ;
+                p0:lastname     "Sandberg" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2266>
+                p0:firstname    "Jim" ;
+                p0:lastname     "Hickey" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#664>
+                p0:firstname    "Gary" ;
+                p0:lastname     "Pettis" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#2464>
+                p0:firstname    "Jim" ;
+                p0:lastname     "Riggleman" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#562>
+                p0:firstname    "Dino" ;
+                p0:lastname     "Ebel" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2959>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#958>
+                p0:firstname    "Jerry" ;
+                p0:lastname     "Narron" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2260>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1863>
+                p0:firstname    "Rudy" ;
+                p0:lastname     "Arias" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#61>
+                p0:firstname    "Darren" ;
+                p0:lastname     "Bush" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1857>
+                p0:firstname    "Jim" ;
+                p0:lastname     "Presley" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2362>
+                p0:firstname    "Brian" ;
+                p0:lastname     "Butterfield" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#2561>
+                p0:firstname    "Walt" ;
+                p0:lastname     "Weiss" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#157>
+                p0:firstname    "Brad" ;
+                p0:lastname     "Ausmus" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#568>
+                p0:firstname    "Steve" ;
+                p0:lastname     "Soliz" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1058>
+                p0:firstname    "Joe" ;
+                p0:lastname     "Maddon" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#160>
+                p0:firstname    "David" ;
+                p0:lastname     "Newhan" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1262>
+                p0:firstname    "Roberto" ;
+                p0:lastname     "Kelly" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#2164>
+                p0:firstname    "Bobby" ;
+                p0:lastname     "Jones" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2567>
+                p0:firstname    "Steve" ;
+                p0:lastname     "Foster" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#864>
+                p0:firstname    "Eddie" ;
+                p0:lastname     "Perez" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#259>
+                p0:firstname    "Mark" ;
+                p0:lastname     "McGwire" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#963>
+                p0:firstname    "Rick" ;
+                p0:lastname     "Kranitz" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#466>
+                p0:firstname    "Glenn" ;
+                p0:lastname     "Hoffman" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1962>
+                p0:firstname    "Jesus" ;
+                p0:lastname     "Tiamo" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#2062>
+                p0:firstname    "Rick" ;
+                p0:lastname     "Sofield" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#2660>
+                p0:firstname    "Rusty" ;
+                p0:lastname     "Kuntz" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#1059>
+                p0:firstname    "Brandon" ;
+                p0:lastname     "Hyde" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#564>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Hansen" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1662>
+                p0:firstname    "Ricky" ;
+                p0:lastname     "Bones" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1858>
+                p0:firstname    "Einar" ;
+                p0:lastname     "Diaz" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2957>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2960>
+                p0:firstname    "Rob" ;
+                p0:lastname     "Thomson" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#2759>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#360>
+                p0:firstname    "Chris" ;
+                p0:lastname     "Maloney" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#1560>
+                p0:firstname    "Frank" ;
+                p0:lastname     "Menechino" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1359>
+                p0:firstname    "Matt" ;
+                p0:lastname     "Quatraro" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#465>
+                p0:firstname    "Jose" ;
+                p0:lastname     "Valentin" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#2261>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Martinez" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2657>
+                p0:firstname    "Don" ;
+                p0:lastname     "Wakamatsu" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2762>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#962>
+                p0:firstname    "Ed" ;
+                p0:lastname     "Sedar" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#63>
+                p0:firstname    "Tye" ;
+                p0:lastname     "Wwaller" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#769>
+                p0:firstname    "Alex" ;
+                p0:lastname     "Andreopoulos" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#267>
+                p0:firstname    "Steve" ;
+                p0:lastname     "Yeager" ;
+                p0:staffDesc    "Catching Coach" .
+
+<http://marklogic.com/baseball/players#2459>
+                p0:firstname    "Bryan" ;
+                p0:lastname     "Price" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1260>
+                p0:firstname    "Hensley" ;
+                p0:lastname     "Meulens" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2569>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1266>
+                p0:firstname    "Bill" ;
+                p0:lastname     "Hayes" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#2360>
+                p0:firstname    "Victor" ;
+                p0:lastname     "Rodriguez" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#161>
+                p0:firstname    "Omar" ;
+                p0:lastname     "Vizquel" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#857>
+                p0:firstname    "Fredi" ;
+                p0:lastname     "Gonzalez" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#261>
+                p0:firstname    "Davey" ;
+                p0:lastname     "Lopes" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#959>
+                p0:firstname    "Darnell" ;
+                p0:lastname     "Coles" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#763>
+                p0:firstname    "Brook" ;
+                p0:lastname     "Jacoby" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2465>
+                p0:firstname    "Jeff" ;
+                p0:lastname     "Pico" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#1566>
+                p0:firstname    "Jeff" ;
+                p0:lastname     "Urgelles" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1456>
+                p0:firstname    "Lloyd" ;
+                p0:lastname     "McClendon" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1764>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2162>
+                p0:firstname    "Steve" ;
+                p0:lastname     "Buechele" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2656>
+                p0:firstname    "Ned" ;
+                p0:lastname     "Yost" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2864>
+                p0:firstname    "Bobby" ;
+                p0:lastname     "Thigpen" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1362>
+                p0:firstname    "Mickey" ;
+                p0:lastname     "Callaway" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#2063>
+                p0:firstname    "Ray" ;
+                p0:lastname     "Searage" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#2361>
+                p0:firstname    "Arnie" ;
+                p0:lastname     "Beyeler" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#2057>
+                p0:firstname    "Clint" ;
+                p0:lastname     "Hurdle" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#2863>
+                p0:firstname    "Don" ;
+                p0:lastname     "Cooper" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#464>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#2761>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#260>
+                p0:firstname    "John" ;
+                p0:lastname     "Valentin" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#865>
+                p0:firstname    "Alan" ;
+                p0:lastname     "Butts" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1558>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Redmond" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#569>
+                p0:firstname    "Tom" ;
+                p0:lastname     "Gregorio" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#1859>
+                p0:firstname    "Wayne" ;
+                p0:lastname     "Kirby" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#1861>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Wallace" ;
+                p0:staffDesc    "Pitching Coach" .
+
+<http://marklogic.com/baseball/players#2563>
+                p0:firstname    "Blake" ;
+                p0:lastname     "Doyle" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#162>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Clark" ;
+                p0:staffDesc    "Third Base Coach" .
+
+<http://marklogic.com/baseball/players#1765>
+                p0:firstname    "Tony" ;
+                p0:lastname     "Tarasco" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#764>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1464>
+                p0:firstname    "Jason" ;
+                p0:lastname     "Phillips" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#2168>
+                p0:firstname    "Andy" ;
+                p0:lastname     "Hawkins" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#2466>
+                p0:firstname    "Mack" ;
+                p0:lastname     "Jenkins" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#659>
+                p0:firstname    "A.J." ;
+                p0:lastname     "Hinch" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1663>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Racaniello" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#2058>
+                p0:firstname    "Brad" ;
+                p0:lastname     "Fischer" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#860>
+                p0:firstname    "Jose" ;
+                p0:lastname     "Castro" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#858>
+                p0:firstname    "Carlos" ;
+                p0:lastname     "Tosca" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1062>
+                p0:firstname    "Doug" ;
+                p0:lastname     "Dascenzo" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#1258>
+                p0:firstname    "Bruce" ;
+                p0:lastname     "Bochy" ;
+                p0:staffDesc    "Manager" .
+
+<http://marklogic.com/baseball/players#1561>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#1956>
+                p0:firstname    "Steve" ;
+                p0:lastname     "Henderson" ;
+                p0:staffDesc    "Hitting Coach" .
+
+<http://marklogic.com/baseball/players#663>
+                p0:firstname    "Rich" ;
+                p0:lastname     "Dauer" ;
+                p0:staffDesc    "First Base Coach" .
+
+<http://marklogic.com/baseball/players#2267>
+                p0:firstname    "Stan" ;
+                p0:lastname     "Boroski" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#1164>
+                p0:firstname    "Mel" ;
+                p0:lastname     "Stottlemyer" ;
+                p0:staffDesc    "Bullpen Coach" .
+
+<http://marklogic.com/baseball/players#266>
+                p0:firstname    "Steve" ;
+                p0:lastname     "Cilladi" ;
+                p0:staffDesc    "Bullpen Catcher" .
+
+<http://marklogic.com/baseball/players#2460>
+                p0:firstname    "Jay" ;
+                p0:lastname     "Bell" ;
+                p0:staffDesc    "Bench Coach" .
+
+
+
+]]></results>
+
+
+      <query index="19"><![CDATA[
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("rdfs-full.rules", "rdfs.rules", "range.rules", "domain.rules", "subClassOf.rules", "subPropertyOf.rules", "baseball.rules"),
+  (sem:store(), ()))
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+construct {
+  ?s bbr:coachType ?long_name .
+  ?s bb:firstname ?firstname .
+  ?s bb:lastname ?lastname .
+  ?s bb:staffPositions ?staff_pos .
+  ?s bb:staffDesc ?staff_desc .
+}
+WHERE
+{ 
+    ?s bbr:coachingRole bbr:benchCoach .
+    ?s bb:firstname ?firstname .
+    ?s bb:lastname ?lastname .
+    ?s bbr:coachingRole ?role .
+    ?s bb:team ?team .
+    ?role rdfs:label ?staff_desc .
+    ?s ?p ?o .
+#  filter (?team = "Royals")
+}
+order by ?team
+
+ '
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+      ]]></query>
+
+
+
+      <results index="19"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+<http://marklogic.com/baseball/players#2162>
+                p0:firstname    "Steve" ;
+                p0:lastname     "Buechele" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2460>
+                p0:firstname    "Jay" ;
+                p0:lastname     "Bell" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#60>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Aldrete" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1656>
+                p0:firstname    "Bob" ;
+                p0:lastname     "Geren" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1059>
+                p0:firstname    "Brandon" ;
+                p0:lastname     "Hyde" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#357>
+                p0:firstname    "David" ;
+                p0:lastname     "Bell" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1259>
+                p0:firstname    "Ron" ;
+                p0:lastname     "Wotus" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2562>
+                p0:firstname    "Tom" ;
+                p0:lastname     "Runnells" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#762>
+                p0:firstname    "DeMarlo" ;
+                p0:lastname     "Hale" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2858>
+                p0:firstname    "Mark" ;
+                p0:lastname     "Parent" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#258>
+                p0:firstname    "Tim" ;
+                p0:lastname     "Wallach" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#462>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Roberts" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1357>
+                p0:firstname    "Brad" ;
+                p0:lastname     "Mills" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2261>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Martinez" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2657>
+                p0:firstname    "Don" ;
+                p0:lastname     "Wakamatsu" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#562>
+                p0:firstname    "Dino" ;
+                p0:lastname     "Ebel" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1856>
+                p0:firstname    "John" ;
+                p0:lastname     "Russell" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1457>
+                p0:firstname    "Trent" ;
+                p0:lastname     "Jewett" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#958>
+                p0:firstname    "Jerry" ;
+                p0:lastname     "Narron" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2956>
+                p0:firstname    "Tony" ;
+                p0:lastname     "Pena" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2058>
+                p0:firstname    "Brad" ;
+                p0:lastname     "Fischer" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1762>
+                p0:firstname    "Randy" ;
+                p0:lastname     "Knorr" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1158>
+                p0:firstname    "Glenn" ;
+                p0:lastname     "Sherlock" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#858>
+                p0:firstname    "Carlos" ;
+                p0:lastname     "Tosca" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1955>
+                p0:firstname    "Larry" ;
+                p0:lastname     "Bowa" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#158>
+                p0:firstname    "Gene" ;
+                p0:lastname     "Lamont" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#660>
+                p0:firstname    "Trey" ;
+                p0:lastname     "Hillman" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2358>
+                p0:firstname    "Torey" ;
+                p0:lastname     "Lovullo" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2758>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1559>
+                p0:firstname    "Rob" ;
+                p0:lastname     "Leary" ;
+                p0:staffDesc    "Bench Coach" .
+
+
+
+]]></results>
+
+
+
+      <query index="20"><![CDATA[
+
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("rdfs-full.rules", "rdfs.rules", "range.rules", "domain.rules", "subClassOf.rules", "subPropertyOf.rules", "baseball.rules"),
+  (sem:store(), ()))
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+construct {
+  ?s bbr:coachType ?long_name .
+  ?s bb:firstname ?firstname .
+  ?s bb:lastname ?lastname .
+  ?s bb:staffPositions ?staff_pos .
+  ?s bb:staffDesc ?staff_desc .
+}
+WHERE
+{ 
+    ?s rdf:type bbr:reliever .
+    ?s rdf:type bbr:closer .
+    ?s bb:firstname ?firstname .
+    ?s bb:lastname ?lastname .
+   ?s bb:team ?team .
+    ?s ?p ?o .
+}
+order by ?team
+
+ '
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+      ]]></query>
+
+
+
+      <results index="20"><![CDATA[
+
+
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+<http://marklogic.com/baseball/players#210>
+                p0:firstname    "Kenley" ;
+                p0:lastname     "Jansen" .
+
+<http://marklogic.com/baseball/players#2403>
+                p0:firstname    "Aroldis" ;
+                p0:lastname     "Chapman" .
+
+<http://marklogic.com/baseball/players#6>
+                p0:firstname    "Sean" ;
+                p0:lastname     "Doolittle" .
+
+<http://marklogic.com/baseball/players#1204>
+                p0:firstname    "Santiago" ;
+                p0:lastname     "Casilla" .
+
+<http://marklogic.com/baseball/players#2312>
+                p0:firstname    "Koji" ;
+                p0:lastname     "Uehara" .
+
+<http://marklogic.com/baseball/players#807>
+                p0:firstname    "Craig" ;
+                p0:lastname     "Kimbrel" .
+
+<http://marklogic.com/baseball/players#1415>
+                p0:firstname    "Fernando" ;
+                p0:lastname     "Rodney" .
+
+<http://marklogic.com/baseball/players#1915>
+                p0:firstname    "Jonathan" ;
+                p0:lastname     "Papelbon" .
+
+<http://marklogic.com/baseball/players#2612>
+                p0:firstname    "Greg" ;
+                p0:lastname     "Holland" .
+
+<http://marklogic.com/baseball/players#107>
+                p0:firstname    "Joe" ;
+                p0:lastname     "Nathan" .
+
+
+
+
+]]></results>
+
+
+    </queries>
+  </verification>  
+</stresstest>

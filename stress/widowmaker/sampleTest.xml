@@ -1,0 +1,14 @@
+<stress-config>
+  <connect-location>QA_HOME/stress/widowmaker/connectInfo.xml</connect-location>
+  <min-users>10</min-users>
+  <max-users>30</max-users>
+  <stress-tests>
+    <test-location>QA_HOME/stress/widowmaker/sample/sampleLoadTester.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/sample/sampleDeleteTester.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/sample/sampleUpdateTester.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/sample/sampleQueryTester.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/loadtests/jsLoadTester2.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/JsonTests/QueryTester4.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/crudtests/JSdeletetest1.xml</test-location>
+  </stress-tests>
+</stress-config>

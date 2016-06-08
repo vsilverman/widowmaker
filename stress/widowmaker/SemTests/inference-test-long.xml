@@ -1,0 +1,606 @@
+<stresstest>
+  <testtype>inferenceTester</testtype>
+  <numloops>100</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1</checkinterval>
+    <loaddir>QA_HOME/testdata/semantics/stress/</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>1</concurrency>
+    <repeat>1</repeat>
+    <queries>
+
+
+	 <query index="6"><![CDATA[
+
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("baseball.rules", "rdfs-plus-full.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix owl:     <http://www.w3.org/2002/07/owl#> 
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+construct { ?s ?p ?o . }
+WHERE
+{ 
+  ?s bb:team ?team .
+  ?team bbr:memberOf bbr:NL .
+  ?s bbr:coachingRole bbr:benchCoach .
+  ?s ?p ?o .
+}
+order by ?s ?p ?o
+ '
+let $triples := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($triples, "turtle")
+
+return $rdf
+
+       ]]></query>
+
+
+
+      <results index="6"><![CDATA[
+
+
+
+@prefix p2: <http://marklogic.com/baseball/rules#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xs: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix p0: <http://marklogic.com/baseball/players#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://marklogic.com/baseball/players#1559>
+                p0:firstname    "Rob" ;
+                p0:lastname     "Leary" ;
+                p0:team         p2:Marlins ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#1559> ;
+                p0:position     "coach" ;
+                p0:number       "14"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#1558> .
+
+<http://marklogic.com/baseball/players#1656>
+                p0:firstname    "Bob" ;
+                p0:lastname     "Geren" ;
+                p0:team         p2:Mets ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#1656> ;
+                p0:position     "coach" ;
+                p0:number       "7"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#1655> .
+
+<http://marklogic.com/baseball/players#1059>
+                p0:firstname    "Brandon" ;
+                p0:lastname     "Hyde" ;
+                p0:team         p2:Cubs ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#1059> ;
+                p0:position     "coach" ;
+                p0:number       "100"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#1058> .
+
+<http://marklogic.com/baseball/players#2058>
+                p0:firstname    "Brad" ;
+                p0:lastname     "Fischer" ;
+                p0:team         p2:Pirates ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#2058> ;
+                p0:position     "coach" ;
+                p0:number       "100"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#2057> .
+
+<http://marklogic.com/baseball/players#1762>
+                p0:firstname    "Randy" ;
+                p0:lastname     "Knorr" ;
+                p0:team         p2:Nationals ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#1762> ;
+                p0:position     "coach" ;
+                p0:number       "53"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#1761> .
+
+<http://marklogic.com/baseball/players#1259>
+                p0:firstname    "Ron" ;
+                p0:lastname     "Wotus" ;
+                p0:team         p2:Giants ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#1259> ;
+                p0:position     "coach" ;
+                p0:number       "23"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#1258> .
+
+<http://marklogic.com/baseball/players#357>
+                p0:firstname    "David" ;
+                p0:lastname     "Bell" ;
+                p0:team         p2:Cardinals ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#357> ;
+                p0:position     "coach" ;
+                p0:number       "23"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#356> .
+
+<http://marklogic.com/baseball/players#2562>
+                p0:firstname    "Tom" ;
+                p0:lastname     "Runnells" ;
+                p0:team         p2:Rockies ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#2562> ;
+                p0:position     "coach" ;
+                p0:number       "11"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#2561> .
+
+<http://marklogic.com/baseball/players#1158>
+                p0:firstname    "Glenn" ;
+                p0:lastname     "Sherlock" ;
+                p0:team         p2:DBacks ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#1158> ;
+                p0:position     "coach" ;
+                p0:number       "100"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#1157> .
+
+<http://marklogic.com/baseball/players#1955>
+                p0:firstname    "Larry" ;
+                p0:lastname     "Bowa" ;
+                p0:team         p2:Phillies ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#1955> ;
+                p0:position     "coach" ;
+                p0:number       "10"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#1954> .
+
+<http://marklogic.com/baseball/players#858>
+                p0:firstname    "Carlos" ;
+                p0:lastname     "Tosca" ;
+                p0:team         p2:Braves ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#858> ;
+                p0:position     "coach" ;
+                p0:number       "100"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#857> .
+
+<http://marklogic.com/baseball/players#258>
+                p0:firstname    "Tim" ;
+                p0:lastname     "Wallach" ;
+                p0:team         p2:Dodgers ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#258> ;
+                p0:position     "coach" ;
+                p0:number       "29"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#257> .
+
+<http://marklogic.com/baseball/players#462>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Roberts" ;
+                p0:team         p2:Padres ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#462> ;
+                p0:position     "coach" ;
+                p0:number       "10"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#461> .
+
+<http://marklogic.com/baseball/players#958>
+                p0:firstname    "Jerry" ;
+                p0:lastname     "Narron" ;
+                p0:team         p2:Brewers ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#958> ;
+                p0:position     "coach" ;
+                p0:number       "100"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#957> .
+
+<http://marklogic.com/baseball/players#2460>
+                p0:firstname    "Jay" ;
+                p0:lastname     "Bell" ;
+                p0:team         p2:Reds ;
+                a               p2:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#2460> ;
+                p0:position     "coach" ;
+                p0:number       "49"^^xs:integer ;
+                p2:coachingRole p2:benchCoach ;
+                p2:coachesFor   <http://marklogic.com/baseball/players#2459> .
+
+
+
+]]></results>
+
+
+
+      <query index="7"><![CDATA[
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("baseball.rules", "rdfs-plus-full.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix owl:     <http://www.w3.org/2002/07/owl#> 
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+construct { ?s ?p ?o . }
+WHERE
+{ 
+  ?s bb:lastname "Hale" .
+  ?s rdfs:isA bbr:manager .
+  ?s ?p ?o .
+}
+order by ?s ?p
+ '
+let $triples := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($triples, "turtle")
+
+return $rdf
+
+      ]]></query>
+
+
+
+      <results index="7"><![CDATA[
+
+
+
+@prefix p2: <http://marklogic.com/baseball/rules#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix p0: <http://marklogic.com/baseball/players#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://marklogic.com/baseball/players#1157>
+                p2:onRosterOf   <http://marklogic.com/baseball/players#1118> ,
+                                <http://marklogic.com/baseball/players#1132> ,
+                                <http://marklogic.com/baseball/players#1117> ,
+                                <http://marklogic.com/baseball/players#1126> ,
+                                <http://marklogic.com/baseball/players#1116> ,
+                                <http://marklogic.com/baseball/players#1136> ,
+                                <http://marklogic.com/baseball/players#1115> ,
+                                <http://marklogic.com/baseball/players#1131> ,
+                                <http://marklogic.com/baseball/players#1114> ,
+                                <http://marklogic.com/baseball/players#1134> ,
+                                <http://marklogic.com/baseball/players#1113> ,
+                                <http://marklogic.com/baseball/players#1124> ,
+                                <http://marklogic.com/baseball/players#1112> ,
+                                <http://marklogic.com/baseball/players#1130> ,
+                                <http://marklogic.com/baseball/players#1111> ,
+                                <http://marklogic.com/baseball/players#1125> ,
+                                <http://marklogic.com/baseball/players#1110> ,
+                                <http://marklogic.com/baseball/players#1129> ,
+                                <http://marklogic.com/baseball/players#1109> ,
+                                <http://marklogic.com/baseball/players#1122> ,
+                                <http://marklogic.com/baseball/players#1108> ,
+                                <http://marklogic.com/baseball/players#1133> ,
+                                <http://marklogic.com/baseball/players#1107> ,
+                                <http://marklogic.com/baseball/players#1121> ,
+                                <http://marklogic.com/baseball/players#1106> ,
+                                <http://marklogic.com/baseball/players#1128> ,
+                                <http://marklogic.com/baseball/players#1105> ,
+                                <http://marklogic.com/baseball/players#1123> ,
+                                <http://marklogic.com/baseball/players#1104> ,
+                                <http://marklogic.com/baseball/players#1135> ,
+                                <http://marklogic.com/baseball/players#1103> ,
+                                <http://marklogic.com/baseball/players#1119> ,
+                                <http://marklogic.com/baseball/players#1102> ,
+                                <http://marklogic.com/baseball/players#1127> ,
+                                <http://marklogic.com/baseball/players#1101> ,
+                                <http://marklogic.com/baseball/players#1120> ;
+                p0:firstname    "Chip" ;
+                p0:lastname     "Hale" ;
+                p0:team         p2:DBacks ;
+                p2:manages      <http://marklogic.com/baseball/players#1133> ,
+                                <http://marklogic.com/baseball/players#1134> ,
+                                <http://marklogic.com/baseball/players#1102> ,
+                                <http://marklogic.com/baseball/players#1132> ,
+                                <http://marklogic.com/baseball/players#1131> ,
+                                <http://marklogic.com/baseball/players#1130> ,
+                                <http://marklogic.com/baseball/players#1129> ,
+                                <http://marklogic.com/baseball/players#1128> ,
+                                <http://marklogic.com/baseball/players#1127> ,
+                                <http://marklogic.com/baseball/players#1126> ,
+                                <http://marklogic.com/baseball/players#1101> ,
+                                <http://marklogic.com/baseball/players#1125> ,
+                                <http://marklogic.com/baseball/players#1124> ,
+                                <http://marklogic.com/baseball/players#1116> ,
+                                <http://marklogic.com/baseball/players#1123> ,
+                                <http://marklogic.com/baseball/players#1136> ,
+                                <http://marklogic.com/baseball/players#1121> ,
+                                <http://marklogic.com/baseball/players#1120> ,
+                                <http://marklogic.com/baseball/players#1119> ,
+                                <http://marklogic.com/baseball/players#1118> ,
+                                <http://marklogic.com/baseball/players#1117> ,
+                                <http://marklogic.com/baseball/players#1122> ,
+                                <http://marklogic.com/baseball/players#1115> ,
+                                <http://marklogic.com/baseball/players#1114> ,
+                                <http://marklogic.com/baseball/players#1113> ,
+                                <http://marklogic.com/baseball/players#1112> ,
+                                <http://marklogic.com/baseball/players#1111> ,
+                                <http://marklogic.com/baseball/players#1110> ,
+                                <http://marklogic.com/baseball/players#1109> ,
+                                <http://marklogic.com/baseball/players#1108> ,
+                                <http://marklogic.com/baseball/players#1106> ,
+                                <http://marklogic.com/baseball/players#1135> ,
+                                <http://marklogic.com/baseball/players#1105> ,
+                                <http://marklogic.com/baseball/players#1104> ,
+                                <http://marklogic.com/baseball/players#1103> ,
+                                <http://marklogic.com/baseball/players#1107> ;
+                a               p2:rosterMember ,
+                                p2:coachingStaff ,
+                                rdfs:Resource ;
+                rdfs:isA        p2:manager ;
+                <http://www.w3.org/2002/07/owl#sameAs>
+                                <http://marklogic.com/baseball/players#1157> ;
+                p0:position     "manager" ;
+                p0:number       "100"^^<http://www.w3.org/2001/XMLSchema#integer> ;
+                p2:coachingRole p2:manager ;
+                p2:supervises   <http://marklogic.com/baseball/players#1160> ,
+                                <http://marklogic.com/baseball/players#1161> ,
+                                <http://marklogic.com/baseball/players#1159> ,
+                                <http://marklogic.com/baseball/players#1158> ,
+                                <http://marklogic.com/baseball/players#1163> ,
+                                <http://marklogic.com/baseball/players#1165> ,
+                                <http://marklogic.com/baseball/players#1164> ,
+                                <http://marklogic.com/baseball/players#1162> .
+
+
+
+
+]]></results>
+
+
+      <query index="19"><![CDATA[
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("rdfs-full.rules", "rdfs.rules", "range.rules", "domain.rules", "subClassOf.rules", "subPropertyOf.rules", "baseball.rules"),
+  (sem:store(), ()))
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+construct {
+  ?s bbr:coachType ?long_name .
+  ?s bb:firstname ?firstname .
+  ?s bb:lastname ?lastname .
+  ?s bb:staffPositions ?staff_pos .
+  ?s bb:staffDesc ?staff_desc .
+}
+WHERE
+{ 
+    ?s bbr:coachingRole bbr:benchCoach .
+    ?s bb:firstname ?firstname .
+    ?s bb:lastname ?lastname .
+    ?s bbr:coachingRole ?role .
+    ?s bb:team ?team .
+    ?role rdfs:label ?staff_desc .
+    ?s ?p ?o .
+#  filter (?team = "Royals")
+}
+order by ?team
+
+ '
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+      ]]></query>
+
+
+
+      <results index="19"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+<http://marklogic.com/baseball/players#2162>
+                p0:firstname    "Steve" ;
+                p0:lastname     "Buechele" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2460>
+                p0:firstname    "Jay" ;
+                p0:lastname     "Bell" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#60>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Aldrete" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1656>
+                p0:firstname    "Bob" ;
+                p0:lastname     "Geren" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1059>
+                p0:firstname    "Brandon" ;
+                p0:lastname     "Hyde" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#357>
+                p0:firstname    "David" ;
+                p0:lastname     "Bell" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1259>
+                p0:firstname    "Ron" ;
+                p0:lastname     "Wotus" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2562>
+                p0:firstname    "Tom" ;
+                p0:lastname     "Runnells" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#762>
+                p0:firstname    "DeMarlo" ;
+                p0:lastname     "Hale" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2858>
+                p0:firstname    "Mark" ;
+                p0:lastname     "Parent" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#258>
+                p0:firstname    "Tim" ;
+                p0:lastname     "Wallach" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#462>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Roberts" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1357>
+                p0:firstname    "Brad" ;
+                p0:lastname     "Mills" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2261>
+                p0:firstname    "Dave" ;
+                p0:lastname     "Martinez" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2657>
+                p0:firstname    "Don" ;
+                p0:lastname     "Wakamatsu" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#562>
+                p0:firstname    "Dino" ;
+                p0:lastname     "Ebel" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1856>
+                p0:firstname    "John" ;
+                p0:lastname     "Russell" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1457>
+                p0:firstname    "Trent" ;
+                p0:lastname     "Jewett" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#958>
+                p0:firstname    "Jerry" ;
+                p0:lastname     "Narron" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2956>
+                p0:firstname    "Tony" ;
+                p0:lastname     "Pena" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2058>
+                p0:firstname    "Brad" ;
+                p0:lastname     "Fischer" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1762>
+                p0:firstname    "Randy" ;
+                p0:lastname     "Knorr" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1158>
+                p0:firstname    "Glenn" ;
+                p0:lastname     "Sherlock" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#858>
+                p0:firstname    "Carlos" ;
+                p0:lastname     "Tosca" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1955>
+                p0:firstname    "Larry" ;
+                p0:lastname     "Bowa" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#158>
+                p0:firstname    "Gene" ;
+                p0:lastname     "Lamont" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#660>
+                p0:firstname    "Trey" ;
+                p0:lastname     "Hillman" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2358>
+                p0:firstname    "Torey" ;
+                p0:lastname     "Lovullo" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#2758>
+                p0:firstname    "FIRSTNAME" ;
+                p0:lastname     "LASTNAME" ;
+                p0:staffDesc    "Bench Coach" .
+
+<http://marklogic.com/baseball/players#1559>
+                p0:firstname    "Rob" ;
+                p0:lastname     "Leary" ;
+                p0:staffDesc    "Bench Coach" .
+
+
+
+]]></results>
+
+
+
+    </queries>
+  </verification>  
+</stresstest>

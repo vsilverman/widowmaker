@@ -1,0 +1,30 @@
+<stresstest>
+  <testtype>querytester</testtype>
+  <numloops>1000</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1000</checkinterval>
+    <loaddir>QA_HOME/testdata/4.0/non-geo-bucket/</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>5</concurrency>
+    <repeat>1000</repeat>
+    <queries>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      let $data1 := cts:element-reference(xs:QName("qa:ulong-1"))
+      let $data2 := cts:element-reference(xs:QName("qa:double-1"))
+      let $covar := xs:decimal(cts:covariance-p($data1,$data2,(),(cts:collection-query("_COLLECTION_")))) 
+      let $_ := xdmp:log(fn:concat("MathIndexTest 1 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($covar)),"debug")
+      return $covar eq xs:decimal("1721157.19548233")
+      ]]></query>
+
+    </queries>
+  </verification>  
+</stresstest>

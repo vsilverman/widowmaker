@@ -1,0 +1,32 @@
+<stresstest>
+  <testtype json="true">querytester</testtype>
+  <numloops>1000</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1000</checkinterval>
+    <loaddir>QA_HOME/testdata/jsonStress/data4/</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>10</concurrency>
+    <repeat>1000</repeat>
+    <queries>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      xdmp:set-request-time-limit(3600),
+      let $result := cts:search(
+        fn:collection("_COLLECTION_"), 
+        cts:path-geospatial-query('/geometry[type="MultiPoint"]/array-node("coordinates")/array-node("coordinates")', cts:box(9, 120, 35, 131), "type=long-lat-point")
+      )
+      let $count := fn:count($result)
+      (: let $_ := xdmp:log(fn:concat("JSON QueryTester3 Test 1 at ", "_COLLECTION_ / _LOOP_ is ", $count),"debug") :)
+      return $count eq _LOOP_
+      ]]></query>
+
+    </queries>
+  </verification>  
+</stresstest>

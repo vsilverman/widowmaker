@@ -1,0 +1,26 @@
+<stress-config>
+  <connect-location>QA_HOME/stress/widowmaker/connectInfo.xml</connect-location>
+  <min-users>20</min-users>
+  <max-users>25</max-users>
+  <stress-tests>
+    <test-location>QA_HOME/stress/widowmaker/loadtests/bulkLoadTester_noTransactions.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/loadtests/bulkLoadTester_transactions_commit.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/loadtests/bulkLoadTester_transactions_rollback.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/crudtests/bulkQueryTest.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/loadtests/pojoLoadTester1.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/loadtests/evalLoadTester1.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/loadtests/extensionLoadTester1.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/crudtests/restDeleteTest1.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/crudtests/restQueryTest.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/loadtests/restLoadTester_noTransactions.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/loadtests/restLoadTester_transactions_commit.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/loadtests/restLoadTester_transactions_rollback.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/crudtests/restUpdateTest1.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/crudtests/restPatchTest1.xml</test-location>
+    <test-location>QA_HOME/stress/widowmaker/crudtests/restTransformTest1.xml</test-location>
+    <!-- test-location>QA_HOME/stress/widowmaker/crudtests/restMatchTest1.xml</test-location -->
+    <!-- test-location>QA_HOME/stress/widowmaker/loadtests/restLoadTester2.xml</test-location -->
+    <!-- test-location>QA_HOME/stress/widowmaker/loadtests/restLoadTester3.xml</test-location -->
+  </stress-tests>
+</stress-config>
+

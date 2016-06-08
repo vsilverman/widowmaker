@@ -1,0 +1,362 @@
+<stresstest>
+  <testtype>querytester</testtype>
+  <numloops>1000</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1000</checkinterval>
+    <loaddir>QA_HOME/testdata/PathIndexStress</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>5</concurrency>
+    <repeat>10000</repeat>
+    <queries>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:values(cts:path-reference("//stress:a/@href"),(),(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 1 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 190)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:value-ranges(cts:path-reference("//stress:a/@href"),
+          ("17","Ch","Ka","No"),(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 2 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 5)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:value-match(cts:path-reference("//stress:a/@href"),"Ch*",(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 3 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 4)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := 
+        cts:search(fn:doc(),
+                   cts:and-query((
+                     cts:collection-query("_COLLECTION_"),
+                     cts:path-range-query("//stress:a/@href","=","Western_Pomerania"))),
+                   "unfiltered")//stress:a/@href
+      let $data-count := fn:count($data)
+      let $_ := xdmp:log(fn:concat("PathIndexTest 4 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq _LOOP_*53)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := 
+        cts:search(fn:doc(),
+                   cts:and-query((
+                     cts:collection-query("_COLLECTION_"),
+                     cts:path-range-query("//stress:a/@href","=","Western_Pomerania"))),
+                   "filtered")//stress:a/@href
+      let $data-count := fn:count($data)
+      let $_ := xdmp:log(fn:concat("PathIndexTest 5 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq _LOOP_*53)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := cts:contains(fn:doc(),
+                     cts:and-query((
+                       cts:collection-query("_COLLECTION_"),
+                       cts:path-range-query("//stress:a/@href","=","Western_Pomerania"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 6 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data)),"debug")
+      return $data 
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:values(cts:path-reference("stress:li/stress:a"),(),(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 7 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 56)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:value-ranges(cts:path-reference("stress:li/stress:a"),
+          ("17","Ch","Ka","No"),(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 8 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 5)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:value-match(cts:path-reference("stress:li/stress:a"),"Ch*",(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 9 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 3)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := 
+        cts:search(fn:doc(),
+                   cts:and-query((
+                     cts:collection-query("_COLLECTION_"),
+                     cts:path-range-query("stress:li/stress:a","=","Kalmar Union"))),
+                   "unfiltered")//stress:li/stress:a
+      let $data-count := fn:count($data)
+      let $_ := xdmp:log(fn:concat("PathIndexTest 10 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq _LOOP_*44)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := 
+        cts:search(fn:doc(),
+                   cts:and-query((
+                     cts:collection-query("_COLLECTION_"),
+                     cts:path-range-query("stress:li/stress:a","=","Kalmar Union"))),
+                   "filtered")//stress:li/stress:a
+      let $data-count := fn:count($data)
+      let $_ := xdmp:log(fn:concat("PathIndexTest 11 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq _LOOP_*44)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := cts:contains(fn:doc(),
+                     cts:and-query((
+                       cts:collection-query("_COLLECTION_"),
+                       cts:path-range-query("stress:li/stress:a","=","Kalmar Union"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 12 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data)),"debug")
+      return $data 
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:values(cts:path-reference("stress:a"),(),(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 13 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 188)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:value-ranges(cts:path-reference("stress:a"),
+          ("17","Ch","Ka","No"),(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 14 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 5)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:value-match(cts:path-reference("stress:a"),"Ch*",(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 15 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 4)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := 
+        cts:search(fn:doc(),
+                   cts:and-query((
+                     cts:collection-query("_COLLECTION_"),
+                     cts:path-range-query("stress:a","=","Harald Nicolai Storm Wergeland"))),
+                   "unfiltered")//stress:a
+      let $data-count := fn:count($data)
+      let $_ := xdmp:log(fn:concat("PathIndexTest 16 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq _LOOP_*58)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := 
+        cts:search(fn:doc(),
+                   cts:and-query((
+                     cts:collection-query("_COLLECTION_"),
+                     cts:path-range-query("stress:a","=","Harald Nicolai Storm Wergeland"))),
+                   "filtered")//stress:a
+      let $data-count := fn:count($data)
+      let $_ := xdmp:log(fn:concat("PathIndexTest 17 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq _LOOP_*58)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := cts:contains(fn:doc(),
+                     cts:and-query((
+                       cts:collection-query("_COLLECTION_"),
+                       cts:path-range-query("stress:a","=","Harald Nicolai Storm Wergeland"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 18 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data)),"debug")
+      return $data 
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:values(cts:path-reference("/stress:page/*/*/stress:table/*/stress:td[stress:div/@*='toctitle']/stress:ul/stress:ul/stress:li[@class='toclevel-1']/stress:a"),(),(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 19 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return ($data-count eq 11)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+       let $data-count := 
+        fn:count(cts:value-ranges(cts:path-reference("/stress:page/*/*/stress:table/*/stress:td[stress:div/@*='toctitle']/stress:ul/stress:ul/stress:li[@class='toclevel-1']/stress:a"),
+          ("B","D"),(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 20 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return ($data-count eq 3)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:value-match(cts:path-reference("/stress:page/*/*/stress:table/*/stress:td[stress:div/@*='toctitle']/stress:ul/stress:ul/stress:li[@class='toclevel-1']/stress:a"),"D*",(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 21 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return ($data-count eq 1)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data :=
+        cts:search(fn:doc(),
+          cts:and-query((
+            cts:collection-query("_COLLECTION_"),
+            cts:path-range-query("/stress:page/*/*/stress:table/*/stress:td[stress:div/@*='toctitle']/stress:ul/stress:ul/stress:li[@class='toclevel-1']/stress:a","=","Deaths"))),
+          "unfiltered")//stress:a/@href
+      let $data-count := fn:count($data)
+      let $_ := xdmp:log(fn:concat("PathIndexTest 22 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return ($data-count eq _LOOP_*53)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := 
+        cts:search(fn:doc(),
+          cts:and-query((
+            cts:collection-query("_COLLECTION_"),
+            cts:path-range-query("/stress:page/*/*/stress:table/*/stress:td[stress:div/@*='toctitle']/stress:ul/stress:ul/stress:li[@class='toclevel-1']/stress:a","=","Deaths"))),
+          "filtered")//stress:a/@href
+      let $data-count := fn:count($data)
+      let $_ := xdmp:log(fn:concat("PathIndexTest 23 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return ($data-count eq _LOOP_*53)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data := cts:contains(fn:doc(),
+        cts:and-query((
+          cts:collection-query("_COLLECTION_"),
+          cts:path-range-query("/stress:page/*/*/stress:table/*/stress:td[stress:div/@*='toctitle']/stress:ul/stress:ul/stress:li[@class='toclevel-1']/stress:a","=","Deaths"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 24 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data)),"debug")
+      return $data
+      ]]></query> 
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:values(cts:path-reference("/stress:page/*:revision/stress:*/stress:p/stress:a/@title"),(),(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 25 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 113)
+      ]]></query>
+
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      declare namespace qa="http://marklogic.com/qa";
+      declare namespace stress="http://www.mediawiki.org/xml/export-0.4/";
+      let $data-count := 
+        fn:count(cts:values(cts:path-reference("/stress:page/*:revision/stress:*/stress:p/stress:b/*:a[@href='Norway_in_1814']"),(),(),
+          (cts:collection-query("_COLLECTION_"))))
+      let $_ := xdmp:log(fn:concat("PathIndexTest 26 at ", "_COLLECTION_ / _LOOP_ is ", xs:string($data-count)),"debug")
+      return 
+         ($data-count eq 1)
+      ]]></query>
+    </queries>
+  </verification>  
+</stresstest>

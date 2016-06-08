@@ -1,0 +1,14 @@
+<stresstest>
+	<testtype action="delete">crudtester</testtype>
+	<numloops>1</numloops>
+	<toscreen>true</toscreen>
+	<sleeptime>1</sleeptime>
+	<logoption>debug</logoption>
+	<logfilename>auto</logfilename>
+	<outputfile>auto</outputfile>
+	<operations>
+		<checkinterval>1000</checkinterval>
+		<loaddir>QA_HOME/testdata/4.0/geo-bucket/geo-element</loaddir> 
+		<multistatement batchsize="10" type="rollback"/>
+	</operations>	  
+</stresstest>

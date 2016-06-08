@@ -1,0 +1,28 @@
+<stresstest>
+  <testtype>sqltester</testtype>
+  <numloops>10000</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1000</checkinterval>
+    <loaddir>/project/engineering/qa/data/stdbank_example</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>10</concurrency>
+    <repeat>10</repeat>
+    <queries>
+      <query result="20292.816">
+	select avg(rate) from fx_test where collection="_COLLECTION_";
+      </query>
+      <query result="150">
+	Select avg(thirteen) from view_path where collection="_COLLECTION_";
+      </query>
+      <query result="20292.816">
+	select avg(rate) from  currency_test c inner join fx_test f on f.to_currency = c.code where f.collection="_COLLECTION_";
+      </query>
+ </queries>
+  </verification>  
+</stresstest>

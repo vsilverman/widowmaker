@@ -1,0 +1,1318 @@
+<stresstest>
+  <testtype>inferenceTester</testtype>
+  <numloops>1000</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1</checkinterval>
+    <loaddir>QA_HOME/testdata/semantics/stress/</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>1</concurrency>
+    <repeat>1</repeat>
+    <queries>
+
+<query index="0"><![CDATA[
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  ?s bb:lastname ?lastname .
+  ?s bb:position ?position .
+  ?s bb:number ?number .
+}
+WHERE
+{ 
+# ?s ?p ?o . 
+  ?s rdfs:isA "grizzled_vet" .
+  ?s bb:lastname ?lastname .
+  ?s bb:position ?position .
+  ?s bb:number ?number .
+}
+order by ?lastname
+ '
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+]]></query>
+
+<results index="0"><![CDATA[
+
+
+
+@prefix xs: <http://www.w3.org/2001/XMLSchema#> .
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+<http://marklogic.com/baseball/players#615>
+                p0:lastname     "Qualls" ;
+                p0:position     "pitcher" ;
+                p0:number       "50"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1122>
+                p0:lastname     "Ziegler" ;
+                p0:position     "pitcher" ;
+                p0:number       "29"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2216>
+                p0:lastname     "Peralta" ;
+                p0:position     "pitcher" ;
+                p0:number       "62"^^xs:integer .
+
+<http://marklogic.com/baseball/players#31>
+                p0:lastname     "Punto" ;
+                p0:position     "infielder" ;
+                p0:number       "1"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1924>
+                p0:lastname     "Howard" ;
+                p0:position     "infielder" ;
+                p0:number       "6"^^xs:integer .
+
+<http://marklogic.com/baseball/players#705>
+                p0:lastname     "Dickey" ;
+                p0:position     "pitcher" ;
+                p0:number       "43"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1929>
+                p0:lastname     "Byrd" ;
+                p0:position     "outfielder" ;
+                p0:number       "3"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1603>
+                p0:lastname     "Colon" ;
+                p0:position     "pitcher" ;
+                p0:number       "40"^^xs:integer .
+
+<http://marklogic.com/baseball/players#928>
+                p0:lastname     "Ramirez" ;
+                p0:position     "infielder" ;
+                p0:number       "16"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1415>
+                p0:lastname     "Rodney" ;
+                p0:position     "pitcher" ;
+                p0:number       "56"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1227>
+                p0:lastname     "Scutaro" ;
+                p0:position     "infielder" ;
+                p0:number       "19"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1201>
+                p0:lastname     "Affeldt" ;
+                p0:position     "pitcher" ;
+                p0:number       "41"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1421>
+                p0:lastname     "Bloomquist" ;
+                p0:position     "infielder" ;
+                p0:number       "8"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2512>
+                p0:lastname     "Hawkins" ;
+                p0:position     "pitcher" ;
+                p0:number       "32"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1912>
+                p0:lastname     "Lee" ;
+                p0:position     "pitcher" ;
+                p0:number       "33"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1740>
+                p0:lastname     "Werth" ;
+                p0:position     "outfielder" ;
+                p0:number       "28"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1926>
+                p0:lastname     "Utley" ;
+                p0:position     "infielder" ;
+                p0:number       "26"^^xs:integer .
+
+<http://marklogic.com/baseball/players#911>
+                p0:lastname     "Lohse" ;
+                p0:position     "pitcher" ;
+                p0:number       "26"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1209>
+                p0:lastname     "Hudson" ;
+                p0:position     "pitcher" ;
+                p0:number       "17"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2925>
+                p0:lastname     "Rodriguez" ;
+                p0:position     "infielder" ;
+                p0:number       "13"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2223>
+                p0:lastname     "Molina" ;
+                p0:position     "catcher" ;
+                p0:number       "28"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1925>
+                p0:lastname     "Rollins" ;
+                p0:position     "infielder" ;
+                p0:number       "11"^^xs:integer .
+
+<http://marklogic.com/baseball/players#35>
+                p0:lastname     "Crisp" ;
+                p0:position     "outfielder" ;
+                p0:number       "4"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1303>
+                p0:lastname     "Atchison" ;
+                p0:position     "pitcher" ;
+                p0:number       "48"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1102>
+                p0:lastname     "Arroyo" ;
+                p0:position     "pitcher" ;
+                p0:number       "61"^^xs:integer .
+
+<http://marklogic.com/baseball/players#302>
+                p0:lastname     "Choate" ;
+                p0:position     "pitcher" ;
+                p0:number       "36"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2234>
+                p0:lastname     "DeJesus" ;
+                p0:position     "outfielder" ;
+                p0:number       "7"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2610>
+                p0:lastname     "Guthrie" ;
+                p0:position     "pitcher" ;
+                p0:number       "11"^^xs:integer .
+
+<http://marklogic.com/baseball/players#701>
+                p0:lastname     "Buehrle" ;
+                p0:position     "pitcher" ;
+                p0:number       "56"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1918>
+                p0:lastname     "Ruiz" ;
+                p0:position     "catcher" ;
+                p0:number       "51"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1720>
+                p0:lastname     "Thornton" ;
+                p0:position     "pitcher" ;
+                p0:number       "46"^^xs:integer .
+
+<http://marklogic.com/baseball/players#230>
+                p0:lastname     "Uribe" ;
+                p0:position     "infielder" ;
+                p0:number       "5"^^xs:integer .
+
+<http://marklogic.com/baseball/players#402>
+                p0:lastname     "Benoit" ;
+                p0:position     "pitcher" ;
+                p0:number       "56"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2202>
+                p0:lastname     "Balfour" ;
+                p0:position     "pitcher" ;
+                p0:number       "50"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2929>
+                p0:lastname     "Beltran" ;
+                p0:position     "outfielder" ;
+                p0:number       "36"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2312>
+                p0:lastname     "Uehara" ;
+                p0:position     "pitcher" ;
+                p0:number       "19"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2127>
+                p0:lastname     "Beltre" ;
+                p0:position     "infielder" ;
+                p0:number       "29"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1213>
+                p0:lastname     "Lopez" ;
+                p0:position     "pitcher" ;
+                p0:number       "49"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2336>
+                p0:lastname     "Ortiz" ;
+                p0:position     "unknown" ;
+                p0:number       "34"^^xs:integer .
+
+<http://marklogic.com/baseball/players#107>
+                p0:lastname     "Nathan" ;
+                p0:position     "pitcher" ;
+                p0:number       "36"^^xs:integer .
+
+<http://marklogic.com/baseball/players#307>
+                p0:lastname     "Lackey" ;
+                p0:position     "pitcher" ;
+                p0:number       "41"^^xs:integer .
+
+
+]]></results>
+
+      <query index="1"><![CDATA[
+
+
+
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("subPropertyOf.rules", "inverseOf.rules", "subClassOf.rules", "baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  ?s bb:lastname ?lastname .
+  ?s bb:position ?position .
+  ?s bb:number ?number .
+}
+  FROM <BaseballRules>
+  FROM <Athletics>
+WHERE
+{
+  {
+#   ?s ?p ?o . 
+    ?s rdfs:isA "pitcher_both_ways" .
+    ?s bb:lastname ?lastname .
+    ?s bb:position ?position .
+    ?s bb:number ?number .
+  }
+}
+'
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+return $rdf
+
+
+      ]]></query>
+
+      <results index="1"><![CDATA[
+
+
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+<http://marklogic.com/baseball/players#2708>
+                p0:lastname     "Milone" ;
+                p0:position     "pitcher" ;
+                p0:number       "49"^^<http://www.w3.org/2001/XMLSchema#integer> .
+
+
+]]></results>
+
+      <query index="4"><![CDATA[
+
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("baseball.rules", "rdfs-plus-full.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix owl:     <http://www.w3.org/2002/07/owl#> 
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+construct { ?s ?p ?o . }
+  from <BaseballRules>
+  from <Athletics>
+WHERE
+{ 
+  ?s bb:team ?team .
+  ?team bbr:memberOf bbr:AL .
+  ?s bbr:coachingRole ?role .
+  ?s bbr:coachesFor ?who .
+  ?s ?p ?o .
+}
+order by ?s ?p ?o
+ '
+let $triples := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($triples, "turtle")
+
+
+(:
+return <coaches>{$triples}</coaches>
+:)
+return $rdf
+
+      ]]></query>
+
+
+      <results index="4"><![CDATA[
+
+
+
+@prefix p1: <http://marklogic.com/baseball/rules#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xs: <http://www.w3.org/2001/XMLSchema#> .
+@prefix p0: <http://marklogic.com/baseball/players#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://marklogic.com/baseball/players#64>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Gallego" ;
+                p0:team         p1:Athletics ;
+                a               p1:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#64> ;
+                p0:position     "coach" ;
+                p0:number       "2"^^xs:integer ;
+                p1:coachingRole p1:thirdBaseCoach ;
+                p1:coachesFor   <http://marklogic.com/baseball/players#59> .
+
+<http://marklogic.com/baseball/players#62>
+                p0:firstname    "Marcus" ;
+                p0:lastname     "Jensen" ;
+                p0:team         p1:Athletics ;
+                a               p1:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#62> ;
+                p0:position     "coach" ;
+                p1:coachingRole p1:hittingCoach ;
+                p1:coachesFor   <http://marklogic.com/baseball/players#59> .
+
+<http://marklogic.com/baseball/players#61>
+                p0:firstname    "Darren" ;
+                p0:lastname     "Bush" ;
+                p0:team         p1:Athletics ;
+                a               p1:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#61> ;
+                p0:position     "coach" ;
+                p1:coachingRole p1:hittingCoach ;
+                p1:coachesFor   <http://marklogic.com/baseball/players#59> .
+
+<http://marklogic.com/baseball/players#63>
+                p0:firstname    "Tye" ;
+                p0:lastname     "Wwaller" ;
+                p0:team         p1:Athletics ;
+                a               p1:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#63> ;
+                p0:position     "coach" ;
+                p0:number       "46"^^xs:integer ;
+                p1:coachingRole p1:firstBaseCoach ;
+                p1:coachesFor   <http://marklogic.com/baseball/players#59> .
+
+<http://marklogic.com/baseball/players#65>
+                p0:firstname    "Curt" ;
+                p0:lastname     "Young" ;
+                p0:team         p1:Athletics ;
+                a               p1:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#65> ;
+                p0:position     "coach" ;
+                p0:number       "41"^^xs:integer ;
+                p1:coachingRole p1:pitchingCoach ;
+                p1:coachesFor   <http://marklogic.com/baseball/players#59> .
+
+<http://marklogic.com/baseball/players#67>
+                p0:firstname    "Casey" ;
+                p0:lastname     "Chavez" ;
+                p0:team         p1:Athletics ;
+                a               p1:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#67> ;
+                p0:position     "coach" ;
+                p0:number       "100"^^xs:integer ;
+                p1:coachingRole p1:bullpenCatcher ;
+                p1:coachesFor   <http://marklogic.com/baseball/players#59> .
+
+<http://marklogic.com/baseball/players#66>
+                p0:firstname    "Scott" ;
+                p0:lastname     "Emerson" ;
+                p0:team         p1:Athletics ;
+                a               p1:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#66> ;
+                p0:position     "coach" ;
+                p1:coachingRole p1:bullpenCoach ;
+                p1:coachesFor   <http://marklogic.com/baseball/players#59> .
+
+<http://marklogic.com/baseball/players#60>
+                p0:firstname    "Mike" ;
+                p0:lastname     "Aldrete" ;
+                p0:team         p1:Athletics ;
+                a               p1:coachingStaff ,
+                                rdfs:Resource ;
+                owl:sameAs      <http://marklogic.com/baseball/players#60> ;
+                p0:position     "coach" ;
+                p1:coachingRole p1:benchCoach ;
+                p1:coachesFor   <http://marklogic.com/baseball/players#59> .
+
+
+
+]]></results>
+
+
+
+      <bad-query index="11"><![CDATA[
+
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT { ?s bbr:roster "Twins" . }
+WHERE
+{ 
+# ?s ?p ?o . 
+  ?s bbr:roster "Twins" .
+}
+ '
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+(:
+return <twinkees>{$results}</twinkees>
+:)
+return $rdf
+
+
+
+      ]]></bad-query>
+
+      <bad-results index="11"><![CDATA[
+
+
+@prefix p2: <http://marklogic.com/baseball/rules#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xs: <http://www.w3.org/2001/XMLSchema#> .
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+.
+
+]]></bad-results>
+
+      <query index="13"><![CDATA[
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("baseball.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT
+{
+  ?s bb:lastname ?lastname .
+  ?s bb:position ?position .
+  ?s bb:number ?number .
+}
+WHERE
+{ 
+# ?s ?p ?o . 
+  ?s rdfs:isA "young" .
+  ?s rdfs:isA "southpaw" .
+  ?s bb:lastname ?lastname .
+  ?s bb:position ?position .
+  ?s bb:number ?number .
+}
+order by ?lastname ?s
+ '
+let $results := sem:sparql($query, (), (), $store)
+let $rdf := sem:rdf-serialize($results, "turtle")
+
+(:
+return <young_lefty_whippersnappers>{$results}</young_lefty_whippersnappers>
+:)
+return $rdf
+
+
+
+      ]]></query>
+
+      <results index="13"><![CDATA[
+
+
+
+
+@prefix xs: <http://www.w3.org/2001/XMLSchema#> .
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+<http://marklogic.com/baseball/players#1512>
+                p0:lastname     "Flynn" ;
+                p0:position     "pitcher" ;
+                p0:number       "35"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1404>
+                p0:lastname     "Fernandez" ;
+                p0:position     "pitcher" ;
+                p0:number       "64"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1116>
+                p0:lastname     "Nuno" ;
+                p0:position     "pitcher" ;
+                p0:number       "54"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2608>
+                p0:lastname     "Duffy" ;
+                p0:position     "pitcher" ;
+                p0:number       "41"^^xs:integer .
+
+<http://marklogic.com/baseball/players#419>
+                p0:lastname     "Torres" ;
+                p0:position     "pitcher" ;
+                p0:number       "54"^^xs:integer .
+
+<http://marklogic.com/baseball/players#413>
+                p0:lastname     "Pablo Oramas" ;
+                p0:position     "pitcher" ;
+                p0:number       "60"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1611>
+                p0:lastname     "Matz" ;
+                p0:position     "pitcher" ;
+                p0:number       "63"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2501>
+                p0:lastname     "Aquino" ;
+                p0:position     "pitcher" ;
+                p0:number       "73"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2517>
+                p0:lastname     "Matzek" ;
+                p0:position     "pitcher" ;
+                p0:number       "46"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2219>
+                p0:lastname     "Smyly" ;
+                p0:position     "pitcher" ;
+                p0:number       "33"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1810>
+                p0:lastname     "Matusz" ;
+                p0:position     "pitcher" ;
+                p0:number       "17"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1410>
+                p0:lastname     "Luetge" ;
+                p0:position     "pitcher" ;
+                p0:number       "44"^^xs:integer .
+
+<http://marklogic.com/baseball/players#111>
+                p0:lastname     "Ray" ;
+                p0:position     "pitcher" ;
+                p0:number       "58"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1714>
+                p0:lastname     "Rivero" ;
+                p0:position     "pitcher" ;
+                p0:number       "73"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2504>
+                p0:lastname     "Brothers" ;
+                p0:position     "pitcher" ;
+                p0:number       "49"^^xs:integer .
+
+<http://marklogic.com/baseball/players#314>
+                p0:lastname     "Siegrist" ;
+                p0:position     "pitcher" ;
+                p0:number       "46"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1110>
+                p0:lastname     "De La Rosa" ;
+                p0:position     "pitcher" ;
+                p0:number       "56"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1910>
+                p0:lastname     "Hollands" ;
+                p0:position     "pitcher" ;
+                p0:number       "43"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2102>
+                p0:lastname     "Claudio" ;
+                p0:position     "pitcher" ;
+                p0:number       "65"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1107>
+                p0:lastname     "Chafin" ;
+                p0:position     "pitcher" ;
+                p0:number       "40"^^xs:integer .
+
+<http://marklogic.com/baseball/players#305>
+                p0:lastname     "Gonzales" ;
+                p0:position     "pitcher" ;
+                p0:number       "56"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1803>
+                p0:lastname     "Britton" ;
+                p0:position     "pitcher" ;
+                p0:number       "53"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1905>
+                p0:lastname     "Diekman" ;
+                p0:position     "pitcher" ;
+                p0:number       "63"^^xs:integer .
+
+<http://marklogic.com/baseball/players#211>
+                p0:lastname     "Kershaw" ;
+                p0:position     "pitcher" ;
+                p0:number       "22"^^xs:integer .
+
+<http://marklogic.com/baseball/players#611>
+                p0:lastname     "Keuchel" ;
+                p0:position     "pitcher" ;
+                p0:number       "60"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2011>
+                p0:lastname     "Rodriguez" ;
+                p0:position     "pitcher" ;
+                p0:number       "64"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2815>
+                p0:lastname     "Sale" ;
+                p0:position     "pitcher" ;
+                p0:number       "49"^^xs:integer .
+
+<http://marklogic.com/baseball/players#820>
+                p0:lastname     "Wood" ;
+                p0:position     "pitcher" ;
+                p0:number       "40"^^xs:integer .
+
+<http://marklogic.com/baseball/players#512>
+                p0:lastname     "Roth" ;
+                p0:position     "pitcher" ;
+                p0:number       "41"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1407>
+                p0:lastname     "Hultzen" ;
+                p0:position     "pitcher" ;
+                p0:number       "60"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1506>
+                p0:lastname     "Dayton" ;
+                p0:position     "pitcher" ;
+                p0:number       "66"^^xs:integer .
+
+<http://marklogic.com/baseball/players#515>
+                p0:lastname     "Santiago" ;
+                p0:position     "pitcher" ;
+                p0:number       "53"^^xs:integer .
+
+<http://marklogic.com/baseball/players#407>
+                p0:lastname     "Erlin" ;
+                p0:position     "pitcher" ;
+                p0:number       "41"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2116>
+                p0:lastname     "Perez" ;
+                p0:position     "pitcher" ;
+                p0:number       "33"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2605>
+                p0:lastname     "Collins" ;
+                p0:position     "pitcher" ;
+                p0:number       "55"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2522>
+                p0:lastname     "Sitton" ;
+                p0:position     "pitcher" ;
+                p0:number       "75"^^xs:integer .
+
+<http://marklogic.com/baseball/players#809>
+                p0:lastname     "Minor" ;
+                p0:position     "pitcher" ;
+                p0:number       "36"^^xs:integer .
+
+<http://marklogic.com/baseball/players#917>
+                p0:lastname     "Wang" ;
+                p0:position     "pitcher" ;
+                p0:number       "58"^^xs:integer .
+
+<http://marklogic.com/baseball/players#113>
+                p0:lastname     "Ryan" ;
+                p0:position     "pitcher" ;
+                p0:number       "56"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1003>
+                p0:lastname     "Doubront" ;
+                p0:position     "pitcher" ;
+                p0:number       "22"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2305>
+                p0:lastname     "Escobar" ;
+                p0:position     "pitcher" ;
+                p0:number       "71"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2901>
+                p0:lastname     "Banuelos" ;
+                p0:position     "pitcher" ;
+                p0:number       "75"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1307>
+                p0:lastname     "Crockett" ;
+                p0:position     "pitcher" ;
+                p0:number       "57"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1304>
+                p0:lastname     "Barnes" ;
+                p0:position     "pitcher" ;
+                p0:number       "51"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1801>
+                p0:lastname     "Berry" ;
+                p0:position     "pitcher" ;
+                p0:number       "34"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2217>
+                p0:lastname     "Riefenhauser" ;
+                p0:position     "pitcher" ;
+                p0:number       "34"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2203>
+                p0:lastname     "Beliveau" ;
+                p0:position     "pitcher" ;
+                p0:number       "38"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2408>
+                p0:lastname     "Dennick" ;
+                p0:position     "pitcher" ;
+                p0:number       "41"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1210>
+                p0:lastname     "Kickham" ;
+                p0:position     "pitcher" ;
+                p0:number       "59"^^xs:integer .
+
+<http://marklogic.com/baseball/players#214>
+                p0:lastname     "Martin" ;
+                p0:position     "pitcher" ;
+                p0:number       "76"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2118>
+                p0:lastname     "Ross Jr." ;
+                p0:position     "pitcher" ;
+                p0:number       "46"^^xs:integer .
+
+<http://marklogic.com/baseball/players#501>
+                p0:lastname     "Alvarez" ;
+                p0:position     "pitcher" ;
+                p0:number       "48"^^xs:integer .
+
+<http://marklogic.com/baseball/players#603>
+                p0:lastname     "Chapman" ;
+                p0:position     "pitcher" ;
+                p0:number       "66"^^xs:integer .
+
+<http://marklogic.com/baseball/players#517>
+                p0:lastname     "Skaggs" ;
+                p0:position     "pitcher" ;
+                p0:number       "45"^^xs:integer .
+
+<http://marklogic.com/baseball/players#716>
+                p0:lastname     "Norris" ;
+                p0:position     "pitcher" ;
+                p0:number       "32"^^xs:integer .
+
+<http://marklogic.com/baseball/players#801>
+                p0:lastname     "Avilan" ;
+                p0:position     "pitcher" ;
+                p0:number       "43"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2016>
+                p0:lastname     "Wilson" ;
+                p0:position     "pitcher" ;
+                p0:number       "37"^^xs:integer .
+
+<http://marklogic.com/baseball/players#104>
+                p0:lastname     "Krol" ;
+                p0:position     "pitcher" ;
+                p0:number       "46"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2613>
+                p0:lastname     "Lamb" ;
+                p0:position     "pitcher" ;
+                p0:number       "38"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2511>
+                p0:lastname     "Friedrich" ;
+                p0:position     "pitcher" ;
+                p0:number       "53"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2817>
+                p0:lastname     "Surkamp" ;
+                p0:position     "pitcher" ;
+                p0:number       "53"^^xs:integer .
+
+<http://marklogic.com/baseball/players#408>
+                p0:lastname     "Garces" ;
+                p0:position     "pitcher" ;
+                p0:number       "60"^^xs:integer .
+
+<http://marklogic.com/baseball/players#714>
+                p0:lastname     "Loup" ;
+                p0:position     "pitcher" ;
+                p0:number       "62"^^xs:integer .
+
+<http://marklogic.com/baseball/players#309>
+                p0:lastname     "Lyons" ;
+                p0:position     "pitcher" ;
+                p0:number       "70"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2816>
+                p0:lastname     "Snodgress" ;
+                p0:position     "pitcher" ;
+                p0:number       "68"^^xs:integer .
+
+<http://marklogic.com/baseball/players#306>
+                p0:lastname     "Greenwood" ;
+                p0:position     "pitcher" ;
+                p0:number       "62"^^xs:integer .
+
+<http://marklogic.com/baseball/players#105>
+                p0:lastname     "Lobstein" ;
+                p0:position     "pitcher" ;
+                p0:number       "53"^^xs:integer .
+
+<http://marklogic.com/baseball/players#717>
+                p0:lastname     "Rasmussen" ;
+                p0:position     "pitcher" ;
+                p0:number       "59"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1109>
+                p0:lastname     "Corbin" ;
+                p0:position     "pitcher" ;
+                p0:number       "46"^^xs:integer .
+
+<http://marklogic.com/baseball/players#915>
+                p0:lastname     "Smith" ;
+                p0:position     "pitcher" ;
+                p0:number       "13"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1519>
+                p0:lastname     "Olmos" ;
+                p0:position     "pitcher" ;
+                p0:number       "67"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1012>
+                p0:lastname     "Rosscup" ;
+                p0:position     "pitcher" ;
+                p0:number       "59"^^xs:integer .
+
+<http://marklogic.com/baseball/players#216>
+                p0:lastname     "Ryu" ;
+                p0:position     "pitcher" ;
+                p0:number       "99"^^xs:integer .
+
+<http://marklogic.com/baseball/players#613>
+                p0:lastname     "Oberholtzer" ;
+                p0:position     "pitcher" ;
+                p0:number       "39"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1601>
+                p0:lastname     "Alvarez" ;
+                p0:position     "pitcher" ;
+                p0:number       "68"^^xs:integer .
+
+<http://marklogic.com/baseball/players#303>
+                p0:lastname     "Freeman" ;
+                p0:position     "pitcher" ;
+                p0:number       "71"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1309>
+                p0:lastname     "House" ;
+                p0:position     "pitcher" ;
+                p0:number       "58"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2813>
+                p0:lastname     "Quintana" ;
+                p0:position     "pitcher" ;
+                p0:number       "62"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2717>
+                p0:lastname     "Thompson" ;
+                p0:position     "pitcher" ;
+                p0:number       "64"^^xs:integer .
+
+<http://marklogic.com/baseball/players#816>
+                p0:lastname     "Thomas" ;
+                p0:position     "pitcher" ;
+                p0:number       "67"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2007>
+                p0:lastname     "Locke" ;
+                p0:position     "pitcher" ;
+                p0:number       "49"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2403>
+                p0:lastname     "Chapman" ;
+                p0:position     "pitcher" ;
+                p0:number       "54"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2410>
+                p0:lastname     "Guillon" ;
+                p0:position     "pitcher" ;
+                p0:number       "74"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1007>
+                p0:lastname     "Jokisch" ;
+                p0:position     "pitcher" ;
+                p0:number       "43"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1202>
+                p0:lastname     "Bumgarner" ;
+                p0:position     "pitcher" ;
+                p0:number       "40"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1513>
+                p0:lastname     "Hand" ;
+                p0:position     "pitcher" ;
+                p0:number       "52"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1516>
+                p0:lastname     "Jennings" ;
+                p0:position     "pitcher" ;
+                p0:number       "43"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2609>
+                p0:lastname     "Finnegan" ;
+                p0:position     "pitcher" ;
+                p0:number       "27"^^xs:integer .
+
+<http://marklogic.com/baseball/players#604>
+                p0:lastname     "Cruz" ;
+                p0:position     "pitcher" ;
+                p0:number       "62"^^xs:integer .
+
+<http://marklogic.com/baseball/players#813>
+                p0:lastname     "Shreve" ;
+                p0:position     "pitcher" ;
+                p0:number       "61"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2214>
+                p0:lastname     "Moore" ;
+                p0:position     "pitcher" ;
+                p0:number       "55"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2302>
+                p0:lastname     "Britton" ;
+                p0:position     "pitcher" ;
+                p0:number       "66"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2404>
+                p0:lastname     "Cingrani" ;
+                p0:position     "pitcher" ;
+                p0:number       "52"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1716>
+                p0:lastname     "Solis" ;
+                p0:position     "pitcher" ;
+                p0:number       "44"^^xs:integer .
+
+<http://marklogic.com/baseball/players#15>
+                p0:lastname     "Pomeranz" ;
+                p0:position     "pitcher" ;
+                p0:number       "13"^^xs:integer .
+
+<http://marklogic.com/baseball/players#215>
+                p0:lastname     "Rodriguez" ;
+                p0:position     "pitcher" ;
+                p0:number       "75"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1713>
+                p0:lastname     "Purke" ;
+                p0:position     "pitcher" ;
+                p0:number       "50"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2411>
+                p0:lastname     "Holmberg" ;
+                p0:position     "pitcher" ;
+                p0:number       "36"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2708>
+                p0:lastname     "Milone" ;
+                p0:position     "pitcher" ;
+                p0:number       "49"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2213>
+                p0:lastname     "Montgomery" ;
+                p0:position     "pitcher" ;
+                p0:number       "31"^^xs:integer .
+
+<http://marklogic.com/baseball/players#202>
+                p0:lastname     "Coulombe" ;
+                p0:position     "pitcher" ;
+                p0:number       "64"^^xs:integer .
+
+<http://marklogic.com/baseball/players#103>
+                p0:lastname     "Hardy" ;
+                p0:position     "pitcher" ;
+                p0:number       "65"^^xs:integer .
+
+<http://marklogic.com/baseball/players#205>
+                p0:lastname     "Garcia" ;
+                p0:position     "pitcher" ;
+                p0:number       "81"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2702>
+                p0:lastname     "Darnell" ;
+                p0:position     "pitcher" ;
+                p0:number       "38"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1812>
+                p0:lastname     "McFarland" ;
+                p0:position     "pitcher" ;
+                p0:number       "66"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1019>
+                p0:lastname     "Wood" ;
+                p0:position     "pitcher" ;
+                p0:number       "37"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1402>
+                p0:lastname     "Elias" ;
+                p0:position     "pitcher" ;
+                p0:number       "29"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2218>
+                p0:lastname     "Romero" ;
+                p0:position     "pitcher" ;
+                p0:number       "45"^^xs:integer .
+
+<http://marklogic.com/baseball/players#2716>
+                p0:lastname     "Thielbar" ;
+                p0:position     "pitcher" ;
+                p0:number       "56"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1413>
+                p0:lastname     "Paxton" ;
+                p0:position     "pitcher" ;
+                p0:number       "65"^^xs:integer .
+
+<http://marklogic.com/baseball/players#1515>
+                p0:lastname     "Heaney" ;
+                p0:position     "pitcher" ;
+                p0:number       "25"^^xs:integer .
+
+<http://marklogic.com/baseball/players#715>
+                p0:lastname     "Nolin" ;
+                p0:position     "pitcher" ;
+                p0:number       "35"^^xs:integer .
+
+
+
+
+]]></results>
+
+      <query index="18"><![CDATA[
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("rdfs-full.rules", "rdfs.rules", "range.rules", "domain.rules", "subClassOf.rules", "subPropertyOf.rules", "baseball.rules"),
+  (sem:store(), ()))
+
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+construct {
+  ?s bb:firstname ?firstname .
+  ?s bb:lastname ?lastname .
+  ?s bb:pos ?pos .
+  ?s bb:posDesc ?pos_name .
+}
+WHERE
+{ 
+  graph <Royals>
+  {
+    ?s rdf:type bbr:infielder .
+    ?s bb:firstname ?firstname .
+    ?s bb:lastname ?lastname .
+    ?s bb:position ?pos .
+    optional { bbr:infielder rdfs:label ?pos_name . }
+    ?s ?p ?o .
+  }
+}
+order by ?s
+ '
+let $results := sem:sparql($query, (), (), $store)
+let $ordered-results := for $result in $results
+order by sem:triple-subject($result), sem:triple-predicate($result), sem:triple-object($result)
+return $result
+
+let $rdf := sem:rdf-serialize($results, "turtle")
+(:
+return <Royals_roster>{$ordered-results}</Royals_roster>
+:)
+
+return $rdf
+
+      ]]></query>
+
+      <results index="18"><![CDATA[
+
+
+
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+<http://marklogic.com/baseball/players#2620>
+                p0:pos          "infielder" ;
+                p0:firstname    "Christian" ;
+                p0:lastname     "Colon" .
+
+<http://marklogic.com/baseball/players#2622>
+                p0:pos          "infielder" ;
+                p0:firstname    "Alcides" ;
+                p0:lastname     "Escobar" .
+
+<http://marklogic.com/baseball/players#2623>
+                p0:pos          "infielder" ;
+                p0:firstname    "Johnny" ;
+                p0:lastname     "Giavotella" .
+
+<http://marklogic.com/baseball/players#2626>
+                p0:pos          "infielder" ;
+                p0:firstname    "Mike" ;
+                p0:lastname     "Moustakas" .
+
+<http://marklogic.com/baseball/players#2621>
+                p0:pos          "infielder" ;
+                p0:firstname    "Cheslor" ;
+                p0:lastname     "Cuthbert" .
+
+<http://marklogic.com/baseball/players#2625>
+                p0:pos          "infielder" ;
+                p0:firstname    "Omar" ;
+                p0:lastname     "Infante" .
+
+<http://marklogic.com/baseball/players#2627>
+                p0:pos          "infielder" ;
+                p0:firstname    "Jayson" ;
+                p0:lastname     "Nix" .
+
+
+
+]]></results>
+
+
+      <query index="22"><![CDATA[
+
+
+xquery version "1.0-ml";
+
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $store := sem:ruleset-store(("baseball.rules", "rdfs-plus-full.rules"), sem:store())
+let $query := '
+prefix  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+prefix bb:  <http://marklogic.com/baseball/players#>
+prefix bbr:  <http://marklogic.com/baseball/rules#>
+prefix owl:     <http://www.w3.org/2002/07/owl#> 
+prefix xs: <http://www.w3.org/2001/XMLSchema#>
+
+construct { ?s ?p ?o . }
+  from <BaseballRules>
+  from <Athletics>
+WHERE
+{ 
+  ?s bb:team ?team .
+  ?s ?p ?o .
+  filter (?s = bb:28)
+}
+order by ?s ?p
+ '
+let $triples := sem:sparql($query, (), (), $store)
+
+let $rdf := sem:rdf-serialize($triples, "turtle")
+(:
+return <player_stats>{$triples}</player_stats>
+:)
+return $rdf
+
+
+      ]]></query>
+
+      <results index="22"><![CDATA[
+
+
+
+@prefix p2: <http://marklogic.com/baseball/rules#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xs: <http://www.w3.org/2001/XMLSchema#> .
+@prefix p0: <http://marklogic.com/baseball/players#> .
+
+<http://marklogic.com/baseball/players#28>
+                p2:onRosterOf   <http://marklogic.com/baseball/players#59> ;
+                p0:lastname     "Moss" ;
+                p0:position     "infielder" ;
+                p0:number       "37"^^xs:integer ;
+                p0:throws       "right" ;
+                p0:firstname    "Brandon" ;
+                p0:team         p2:Athletics ;
+                p0:weight       "210"^^xs:integer ;
+                a               p2:outfielder ,
+                                p2:leftFielder ,
+                                p2:athlete ,
+                                p2:firstBaseman ,
+                                p2:rosterMember ,
+                                <http://www.w3.org/2000/01/rdf-schema#Resource> ,
+                                p2:player ,
+                                p2:infielder ;
+                <http://www.w3.org/2002/07/owl#sameAs>
+                                <http://marklogic.com/baseball/players#28> ;
+                p0:bats         "left" ;
+                p0:date-of-birth
+                                "1983-09-16"^^xs:date ;
+                p2:playsFor     <http://marklogic.com/baseball/players#59> ;
+                p0:playerid     "28"^^xs:integer .
+
+
+
+
+
+
+]]></results>
+
+
+
+    </queries>
+  </verification>  
+</stresstest>

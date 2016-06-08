@@ -1,0 +1,7 @@
+<rest-api xmlns='http://marklogic.com/rest-api'>
+     <name>restappserver-1</name>
+     <group>Eval</group>
+     <database>MedlineDB</database>
+     <modules-database>rest-modules</modules-database>
+     <port>8011</port>
+ </rest-api>

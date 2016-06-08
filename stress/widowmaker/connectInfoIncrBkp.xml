@@ -1,0 +1,10 @@
+<connectinfo>
+	<server type="master">
+		<port>5275</port> 
+		<!-- <port>8000</port> -->
+		<username>admin</username>
+		<password>admin</password> 
+		<host>localhost</host> 
+		<database>db1</database>
+	</server> 
+</connectinfo> 

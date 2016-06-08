@@ -1,0 +1,858 @@
+<stresstest>
+  <testtype>sparqlupdatetester</testtype>
+  <numloops>1000</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>1</checkinterval>
+    <loaddir>QA_HOME/testdata/semantics/stress-update/</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>5</concurrency>
+    <repeat>1</repeat>
+    <queries>
+
+<query><![CDATA[
+xquery version "1.0-ml";
+let $comment := "If this query fails, you need to set the appserver to 1.0-ml http://bugtrack.marklogic.com/23677 "
+let $result := sem:sparql('
+PREFIX fn: <http://www.w3.org/2005/xpath-functions#>
+PREFIX  dc:  <http://purl.org/dc/elements/1.1/>
+SELECT  ?title
+WHERE   { ?x dc:title ?title
+          FILTER (fn:not(bound(?title))) 
+        }
+')
+let $count := fn:count($result)
+let $target := 0
+let $_ := xdmp:log("QBug23677...... " || $count || " from _LOOP_ in _COLLECTION_, in " || xdmp:elapsed-time() )
+let $_ := if ($count ne $target) then xdmp:log("QBug23677################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()) else ()
+return fn:true()
+]]></query>
+
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $result := sem:sparql("select * where { ?s ?p ?o .}",(),(), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 1001223
+let $_ := xdmp:log("QA...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time() )
+let $_ := if ($count ne $target) then xdmp:log("QA################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()) else ()
+return $count eq $target or fn:true()
+      ]]></query>
+
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql("select distinct ?s { ?s ?p ?o }", (), (), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 187210
+let $_ := xdmp:log("QB...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time() )
+let $_ := if ($count ne $target) then (xdmp:log("QB################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()),xdmp:save("/tmp/_LOOP_QB.result", sem:query-results-serialize($result))) else ()
+return $count eq $target or fn:true()
+      ]]></query>
+
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $result := sem:sparql("
+prefix k: <http://example.org/kennedy/>
+select ?fn1 ?ln1 ?fn2 ?ln2 ?bd2
+{?p1 a k:person; k:first-name ?fn1; k:last-name ?ln1; k:spouse ?p2 .
+ ?p2 k:first-name ?fn2; k:last-name ?ln2; k:birth-year ?bd2 .
+filter (?ln1 = 'Kennedy')
+filter (?bd2 >= '1940')}
+order by ?p1
+") (: no collection-query here...let triples get returned with cts:frequence ge 1 :)
+let $count := fn:count($result)
+let $target := 18
+let $_ := xdmp:log("QC...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time() )
+let $_ := if ($count ne $target) then (xdmp:log("QC################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()),xdmp:save("/tmp/_LOOP_QC.result", sem:query-results-serialize($result))) else ()
+return $count eq $target or fn:true()
+      ]]></query>
+
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+
+let $result := cts:triples((), (), "1940", ">", "quads", cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 406180 
+let $_ := xdmp:log("QD...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time() )
+let $_ := if ($count ne $target) then (xdmp:log("QD################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()),xdmp:save("/tmp/_LOOP_QD.result", sem:query-results-serialize($result))) else ()
+return $count eq $target or fn:true()
+      ]]></query>
+
+
+
+
+
+      <rem-query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $_ := xdmp:log("beginning to load SP2 ************************")
+(: NOTE: the refers to a location on shared NFS :)
+let $stagger := xdmp:sleep(xdmp:random(300000))
+let $start := xdmp:elapsed-time()
+let $uris := sem:rdf-load("/project/engineering/qa/data/semantics/sp2_1M-nobnodes.n3", "override-graph=_COLLECTION_") 
+return xdmp:log("Loaded SP2_1M from _LOOP_ and _QA_HOME_ in _COLLECTION_, finished in " || xdmp:elapsed-time() - $start),
+fn:true()
+      ]]></rem-query>
+
+	 <query><![CDATA[
+ xquery version "1.0-ml";
+ import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+ (: NOTE: the refers to a location on shared NFS :)
+ (: let $stagger := xdmp:sleep(xdmp:random(300000)) :)
+ let $result := cts:triples((), (), (), (), (), cts:collection-query("_COLLECTION_"))
+ let $count := fn:count($result)
+ let $target := 1001223
+ let $_ :=  xdmp:log("QLoading...... " || $count || " from _LOOP_ and _QA_HOME_ in _COLLECTION_, finished in " || xdmp:elapsed-time() )
+ let $_ := if ($count ne $target) then (xdmp:log("QLoading################ Count is " || $count || " from _LOOP_ in collection _COLLECTION_ in transaction " || xdmp:transaction() || " in _COLLECTION_ in loop _LOOP_")) else ()
+ return $count eq $target or fn:true()
+       ]]></query>
+
+      <!-- Q1 -->
+      <rem-query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql('
+
+PREFIX dc:      <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bench:   <http://localhost/vocabulary/bench/>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#> 
+
+SELECT ?yr
+WHERE {
+  ?journal a bench:Journal .
+  ?journal dc:title "Journal 1 (1940)"^^xsd:string .
+  ?journal dcterms:issued ?yr 
+}',(),(), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 1
+let $_ := xdmp:log("Q1...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q1################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()),xdmp:save("/tmp/_LOOP_Q1.result",sem:query-results-serialize($result))) else ()
+return $count eq $target or fn:true()
+      ]]></rem-query>
+      <!-- Q1 update -->
+      <query><![CDATA[
+      xquery version "1.0-ml";
+      import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+declare option xdmp:transaction-mode "update";
+
+let $result := sem:sparql-update('
+
+PREFIX dc:      <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bench:   <http://localhost/vocabulary/bench/>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#> 
+
+WITH <_COLLECTION_>
+DELETE {
+ ?journal dc:title "Journal 1 (1940)"^^xsd:string
+}
+INSERT {
+  ?journal dc:title "Journal 1 (1940) Special Edition"^^xsd:string
+} 
+WHERE {
+  ?journal a bench:Journal .
+  ?journal dc:title "Journal 1 (1940)"^^xsd:string .
+  ?journal dcterms:issued ?yr 
+}',(),("isolation=same-statement"), sem:store((),cts:collection-query("_COLLECTION_")))
+let $target := 1
+let $_ := xdmp:log("Q1 update...... " || $target || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+return fn:true();
+
+let $result := sem:sparql('
+
+PREFIX dc:      <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bench:   <http://localhost/vocabulary/bench/>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#> 
+
+SELECT ?yr
+WHERE {
+  ?journal a bench:Journal .
+  ?journal dc:title "Journal 1 (1940) Special Edition"^^xsd:string .
+  ?journal dcterms:issued ?yr 
+}',(),(), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 1
+let $_ := xdmp:log("Q1 verify update ...... insert " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q1 after insert ################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction())) else ()
+
+let $result2 := sem:sparql('
+
+PREFIX dc:      <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bench:   <http://localhost/vocabulary/bench/>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#> 
+
+SELECT ?yr
+WHERE {
+  ?journal a bench:Journal .
+  ?journal dc:title "Journal 1 (1940)"^^xsd:string .
+  ?journal dcterms:issued ?yr 
+}',(),(), cts:collection-query("_COLLECTION_"))
+let $count2 := fn:count($result2)
+let $target2 := 0
+let $_ := xdmp:log("Q1 verify update ...... delete " || $count2 || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count2 ne $target2) then (xdmp:log("Q1 after delete ################ Count is " || $count2 || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction())) else ()
+
+return ();
+
+let $result := sem:sparql-update('
+
+PREFIX dc:      <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX bench:   <http://localhost/vocabulary/bench/>
+PREFIX xsd:     <http://www.w3.org/2001/XMLSchema#> 
+
+WITH <_COLLECTION_>
+DELETE {
+  ?journal dc:title "Journal 1 (1940) Special Edition"^^xsd:string
+} 
+
+INSERT {
+  ?journal dc:title "Journal 1 (1940)"^^xsd:string
+}
+WHERE {
+  ?journal a bench:Journal .
+  ?journal dc:title "Journal 1 (1940) Special Edition"^^xsd:string .
+  ?journal dcterms:issued ?yr 
+}',(),("isolation=same-statement"), sem:store((),cts:collection-query("_COLLECTION_")))
+let $target := 1
+let $_ := xdmp:log("Q1 delete/insert  ...... " || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+return ();
+
+xdmp:commit();
+xdmp:log("Q1 FINISH in _COLLECTION_")
+            ]]></query>
+
+      <!-- Q2 -->
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+declare option xdmp:transaction-mode "update";
+
+let $result := sem:sparql('
+PREFIX person: <http://localhost/persons/>
+SELECT ?subject ?predicate
+WHERE {
+  ?subject ?predicate person:Paul_Erdoes
+}
+',(),(), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 572 
+let $_ := xdmp:log("Q2...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q2################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()) ) else ()
+return ();
+
+let $result := sem:sparql-update('
+PREFIX person: <http://localhost/persons/>
+
+WITH <_COLLECTION_>
+DELETE { ?subject ?predicate person:Paul_Erdoes }
+INSERT { GRAPH <_COLLECTION_tmp2> {
+  ?subject ?predicate person:Stephen_Buxton 
+}
+}
+WHERE {
+  ?subject ?predicate person:Paul_Erdoes
+}
+',(),("isolation=same-statement"),sem:store((),cts:collection-query("_COLLECTION_")))
+let $target := 572
+let $_ := xdmp:log("Q2 update...... " || $target || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+return fn:true();
+
+let $result := sem:sparql('
+PREFIX person: <http://localhost/persons/>
+
+SELECT ?subject ?predicate
+WHERE {
+  ?subject ?predicate person:Stephen_Buxton
+}
+',(),(), cts:collection-query("_COLLECTION_tmp2"))
+let $count := fn:count($result)
+let $target := 572
+let $_ := xdmp:log("Q2 verify...... " || $count || " from _LOOP_ in _COLLECTION_tmp2, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q2 after update ################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()) ) else ()
+
+return ();
+let $result := sem:sparql-update('
+PREFIX person: <http://localhost/persons/>
+
+WITH <_COLLECTION_tmp2>
+DELETE { ?subject ?predicate person:Stephen_Buxton }
+INSERT { GRAPH <_COLLECTION_> {
+  ?subject ?predicate person:Paul_Erdoes 
+}
+}
+WHERE {
+  ?subject ?predicate person:Stephen_Buxton
+}
+',(),("isolation=same-statement"),sem:store())
+let $target := 572
+let $_ := xdmp:log("Q2 delete ...... " || $target || " from _LOOP_ in _COLLECTION_tmp, finished in " || xdmp:elapsed-time())
+return ();
+
+
+let $result := sem:sparql('
+PREFIX person: <http://localhost/persons/>
+
+SELECT ?subject ?predicate
+WHERE {
+  ?subject ?predicate person:Stephen_Buxton
+}
+',(),(), cts:collection-query("_COLLECTION_tmp2"))
+let $count := fn:count($result)
+let $target := 0
+let $_ := xdmp:log("Q2 verify...... select " || $count || " from _LOOP_ in _COLLECTION_tmp2, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q2 after delete triples from _COLLECTION_tmp2 ################ Count is " || $count || " from loop _LOOP_ , in transaction " || xdmp:transaction()) ) else ()
+return ();
+
+xdmp:commit();
+xdmp:log("Q2 FINISH in _COLLECTION_")
+
+      ]]></query>
+
+      <!-- Q3 -->
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+declare option xdmp:transaction-mode "update";
+
+let $result := sem:sparql-update("
+CLEAR SILENT GRAPH <SHARED_GRAPH>
+",(),("isolation=same-statement"))
+let $_ := xdmp:log("Q3 CLEAR GRAPH <SHARED_GRAPH>, finished in " || xdmp:elapsed-time())
+return ();
+
+let $result := sem:sparql-update("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX swrc:  <http://swrc.ontoware.org/ontology#>
+
+INSERT { GRAPH <SHARED_GRAPH> 
+{?article rdf:type bench:Article .
+?article ?property ?value} 
+}
+WHERE {
+  ?article rdf:type bench:Article .
+  ?article ?property ?value 
+  FILTER (?property=swrc:pages) 
+}
+",(),("isolation=same-statement"), sem:store((),cts:collection-query("_COLLECTION_")))
+let $_ := xdmp:log("Q3 insert ...... " || " from _LOOP_ in SHARED_GRAPH, finished in " || xdmp:elapsed-time())
+return ();
+
+let $result2 := sem:sparql("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX swrc:  <http://swrc.ontoware.org/ontology#>
+
+SELECT  
+?article ?property ?value 
+WHERE {
+  ?article rdf:type bench:Article .
+  ?article ?property ?value 
+  FILTER (?property=swrc:pages) 
+}
+",(),(), sem:store((),cts:collection-query("SHARED_GRAPH")))
+let $result := sem:sparql("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX swrc:  <http://swrc.ontoware.org/ontology#>
+
+SELECT  
+?article ?property ?value 
+WHERE {
+  ?article rdf:type bench:Article .
+  ?article ?property ?value 
+  FILTER (?property=swrc:pages) 
+}
+",(),(), sem:store((),cts:collection-query("_COLLECTION_")))
+
+let $target := fn:count($result)
+let $count := fn:count($result2)
+let $_ := xdmp:log("Q3 verify...... " || $target || " from _LOOP_ in SHARED_GRAPH," || $count || " in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q3 after update ################ Count is " || $count) || " from loop _LOOP_ in collection _COLLECTION_, in tranction " || xdmp:transaction()) else ()
+return $count eq $target or fn:true();
+
+xdmp:commit();
+xdmp:log("Q3 FINISH in _COLLECTION_")
+      ]]></query>
+
+      <!-- Q3a -->
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+declare option xdmp:transaction-mode "update";
+
+let $result := sem:sparql-update("
+DROP SILENT GRAPH <SHARED_GRAPH_1>
+",(),("isolation=same-statement"))
+let $_ := xdmp:log("Q3a DROP GRAPH <SHARED_GRAPH_1>, finished in " || xdmp:elapsed-time())
+return ();
+
+let $result := sem:sparql-update("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX swrc:  <http://swrc.ontoware.org/ontology#>
+
+INSERT { GRAPH <SHARED_GRAPH_1> 
+{?article rdf:type bench:Article .
+?article ?property ?value} 
+}
+WHERE {
+  ?article rdf:type bench:Article .
+  ?article ?property ?value 
+  FILTER (?property=swrc:pages) 
+}
+",(),("isolation=same-statement"), sem:store((),cts:collection-query("_COLLECTION_")))
+let $_ := xdmp:log("Q3a insert ...... " ||  " from _LOOP_ in SHARED_GRAPH_1, finished in " || xdmp:elapsed-time())
+return ();
+
+let $result2 := sem:sparql("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX swrc:  <http://swrc.ontoware.org/ontology#>
+
+SELECT  
+?article ?property ?value 
+WHERE {
+  ?article rdf:type bench:Article .
+  ?article ?property ?value 
+  FILTER (?property=swrc:pages) 
+}
+",(),(), sem:store((),cts:collection-query("SHARED_GRAPH_1")))
+
+let $result := sem:sparql("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX swrc:  <http://swrc.ontoware.org/ontology#>
+
+SELECT  
+?article ?property ?value 
+WHERE {
+  ?article rdf:type bench:Article .
+  ?article ?property ?value 
+  FILTER (?property=swrc:pages) 
+}
+",(),(), sem:store((),cts:collection-query("_COLLECTION_")))
+
+let $target := fn:count($result)
+let $count := fn:count($result2)
+let $_ := xdmp:log("Q3a verify...... " || $count || " from _LOOP_ in SHARED_GRAPH_1," || $target || " in _COLLECTION_ , finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then xdmp:log("Q3a after update ################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in tranction " || xdmp:transaction()) else ()
+return $count eq $target or fn:true();
+
+xdmp:commit();
+xdmp:log("Q3a FINISH in _COLLECTION_")
+      ]]></query>
+
+      <!-- Q4 -->
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+declare option xdmp:transaction-mode "update";
+
+let $result := sem:sparql-update("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX swrc:  <http://swrc.ontoware.org/ontology#>
+
+DELETE  { GRAPH <_COLLECTION_> 
+{?article rdf:type bench:Incollection
+} 
+}
+
+INSERT { GRAPH <_COLLECTION_tmp4> 
+{?article rdf:type bench:Incollection
+} 
+}
+WHERE {
+  ?article rdf:type bench:Incollection .
+  ?article ?property ?value 
+  FILTER (?property=swrc:pages) 
+}
+",(),("isolation=same-statement"), sem:store((),cts:collection-query("_COLLECTION_")))
+let $_ := xdmp:log("Q4 delete  ...... from _COLLECTION_, insert in _COLLECTION_tmp4 " || " from _LOOP_ , finished in " || xdmp:elapsed-time())
+return ();
+(:
+let $result := sem:sparql("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX swrc:  <http://swrc.ontoware.org/ontology#>
+
+SELECT  
+?article ?property ?value 
+WHERE {
+  ?article rdf:type bench:Incollection .
+  ?article ?property ?value 
+  FILTER (?property=swrc:pages) 
+}
+",(),(), sem:store((),
+:)
+
+let $result := cts:triples((), (), (), (), (), cts:collection-query("_COLLECTION_tmp4"))
+let $count := fn:count($result)
+let $_ := xdmp:log("Q4 verify...... insert " || $count || " from _LOOP_ in _COLLECTION_tmp4, finished in " || xdmp:elapsed-time())
+(:let $_ := if ($count ne $target) then (xdmp:log("Q4 verify ################ Count is " || $count) || " from loop _LOOP_ in collection _COLLECTION_, in tranction " || xdmp:transaction()) else ()
+:)
+return fn:true();
+
+sem:sparql-update("
+ADD SILENT <_COLLECTION_tmp4> TO <_COLLECTION_>
+",(),("isolation=same-statement"));
+
+
+xdmp:commit();
+xdmp:log("Q4 FINISH in _COLLECTION_")
+
+      ]]></query>
+
+      <!-- Q5-->
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+declare option xdmp:transaction-mode "update";
+
+let $result := sem:sparql-update("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX swrc:  <http://swrc.ontoware.org/ontology#>
+ 
+DELETE  { GRAPH <_COLLECTION_> 
+{?article rdf:type bench:Incollection
+} 
+}
+
+INSERT { GRAPH <_COLLECTION_tmp5> 
+{?article rdf:type bench:Incollection
+} 
+}
+
+WHERE {
+  ?article rdf:type bench:Incollection .
+  ?article ?property ?value 
+  FILTER (?property=swrc:pages) 
+}
+",(),("isolation=same-statement"), sem:store((),cts:collection-query("_COLLECTION_")))
+let $_ := xdmp:log("Q5  ...... delete from _COLLECTION_, insert in _COLLECTION_tmp5 " || " from _LOOP_ , finished in " || xdmp:elapsed-time())
+return ();
+(:
+let $result := sem:sparql("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX swrc:  <http://swrc.ontoware.org/ontology#>
+
+SELECT 
+?article ?property ?value
+ 
+WHERE {
+  ?article rdf:type bench:Incollection .
+  ?article ?property ?value 
+  FILTER (?property=swrc:pages) 
+}",(),(), sem:store((),
+:)
+
+let $result := cts:triples((), (), (), (), (), cts:collection-query("_COLLECTION_tmp5"))
+let $count := fn:count($result)
+let $_ := xdmp:log("Q5 verify ...... insert " || $count || " from _LOOP_ in _COLLECTION_tmp5, finished in " || xdmp:elapsed-time())
+(:let $_ := if ($count ne $target) then (xdmp:log("Q5################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()) ) else ()
+:)
+return fn:true();
+
+sem:sparql-update("
+ADD SILENT <_COLLECTION_tmp5> TO <_COLLECTION_>
+",(),("isolation=same-statement"));
+
+xdmp:commit();
+xdmp:log("Q5 FINISH in _COLLECTION_")
+
+      ]]></query>
+
+      <!-- Q6 -->
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql("
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
+PREFIX dc:      <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?yr ?name ?document
+WHERE {
+  ?class rdfs:subClassOf foaf:Document .
+  ?document rdf:type ?class .
+  ?document dcterms:issued ?yr .
+  ?document dc:creator ?author .
+  ?author foaf:name ?name
+  OPTIONAL {
+    ?class2 rdfs:subClassOf foaf:Document .
+    ?document2 rdf:type ?class2 .
+    ?document2 dcterms:issued ?yr2 .
+    ?document2 dc:creator ?author2 
+    FILTER (?author=?author2 &amp;&amp; ?yr2<?yr)
+  } FILTER (!bound(?author2))
+}",(),(), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 62795
+let $_ := xdmp:log("Q6...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q6################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()) ) else ()
+return $count eq $target or fn:true()
+      ]]></query>
+
+      <!-- Q7 -->
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql("
+PREFIX fn: <http://www.w3.org/2005/xpath-functions#>
+PREFIX rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:    <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf:    <http://xmlns.com/foaf/0.1/>
+PREFIX dc:      <http://purl.org/dc/elements/1.1/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT DISTINCT ?title
+WHERE {
+  ?class rdfs:subClassOf foaf:Document .
+  ?doc rdf:type ?class .
+  ?doc dc:title ?title .
+  ?bag2 ?member2 ?doc .
+  ?doc2 dcterms:references ?bag2
+  OPTIONAL {
+    ?class3 rdfs:subClassOf foaf:Document .
+    ?doc3 rdf:type ?class3 .
+    ?doc3 dcterms:references ?bag3 .
+    ?bag3 ?member3 ?doc
+    OPTIONAL {
+      ?class4 rdfs:subClassOf foaf:Document .
+      ?doc4 rdf:type ?class4 .
+      ?doc4 dcterms:references ?bag4 .
+      ?bag4 ?member4 ?doc3
+    } FILTER (!bound(?doc4))
+  } FILTER (!bound(?doc3))
+}",(),(), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 292
+let $_ := xdmp:log("Q7...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then xdmp:log("Q7################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()) else ()
+return $count eq $target or fn:true()
+      ]]></query>
+
+  <!-- Q8  -->
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql('
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#> 
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX dc:   <http://purl.org/dc/elements/1.1/>
+
+SELECT DISTINCT ?name
+WHERE {
+  ?erdoes rdf:type foaf:Person .
+  ?erdoes foaf:name "Paul Erdoes"^^xsd:string .
+  {
+    ?document dc:creator ?erdoes .
+    ?document dc:creator ?author .
+    ?document2 dc:creator ?author .
+    ?document2 dc:creator ?author2 .
+    ?author2 foaf:name ?name
+    FILTER (?author!=?erdoes &amp;&amp;
+            ?document2!=?document &amp;&amp;
+            ?author2!=?erdoes &amp;&amp;
+            ?author2!=?author)
+  } UNION {
+    ?document dc:creator ?erdoes.
+    ?document dc:creator ?author.
+    ?author foaf:name ?name
+    FILTER (?author!=?erdoes)
+  }
+}',(),(), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 400
+let $_ := xdmp:log("Q8...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q8################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()),xdmp:save("/tmp/_LOOP_Q8.result", sem:query-results-serialize($result))) else ()
+return $count eq $target or fn:true()
+      ]]></query>
+
+      <!-- Q9 -->
+      <rem-query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql("
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+SELECT DISTINCT ?predicate
+WHERE {
+  {
+    ?person rdf:type foaf:Person .
+    ?subject ?predicate ?person
+  } UNION {
+    ?person rdf:type foaf:Person .
+    ?person ?predicate ?object
+  }
+}
+}",(),(), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 4
+let $_ := xdmp:log("Q9...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q9################ Count is " || $count || " from _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()),xdmp:save("/tmp/_LOOP_Q9.result", sem:query-results-serialize($result))) else ()
+return $count eq $target or fn:true()
+      ]]></rem-query>
+
+      <!-- Q10 -->
+      <rem-query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql("
+PREFIX person: <http://localhost/persons/>
+
+SELECT ?subject ?predicate
+WHERE {
+  ?subject ?predicate person:Paul_Erdoes
+}",(),(), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 572
+let $_ := xdmp:log("Q10...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q10################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()),xdmp:save("/tmp/_LOOP_Q10.result", sem:query-results-serialize($result))) else ()
+return $count eq $target or fn:true()
+      ]]></rem-query>
+
+      <!-- Q11 -->
+      <query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql("
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?ee
+WHERE {
+  ?publication rdfs:seeAlso ?ee
+}
+ORDER BY ?ee
+LIMIT 10
+OFFSET 50",(),(), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($result)
+let $target := 10
+let $_ := xdmp:log("Q11...... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("Q11################ Count is " || $count || " from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()),xdmp:save("/tmp/_LOOP_Q11.result", sem:query-results-serialize($result))) else ()
+return $count eq $target or fn:true()
+      ]]></query>
+
+      <!-- Q12a -->
+      <rem-query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql("
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+PREFIX bench: <http://localhost/vocabulary/bench/>
+PREFIX dc:    <http://purl.org/dc/elements/1.1/>
+
+ASK {
+  ?article rdf:type bench:Article .
+  ?article dc:creator ?person1 .
+  ?inproc  rdf:type bench:Inproceedings .
+  ?inproc  dc:creator ?person2 .
+  ?person1 foaf:name ?name1 .
+  ?person2 foaf:name ?name2
+  FILTER (?name1=?name2)
+}",(),(), cts:collection-query("_COLLECTION_"))
+let $_ := xdmp:log("Q12a...... from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($result) then () else xdmp:log("Q12a################ wrong from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction())
+return $result (: should be true :) or fn:true()
+      ]]></rem-query>
+
+      <!-- Q12b -->
+      <rem-query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql('
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#> 
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX dc:   <http://purl.org/dc/elements/1.1/>
+
+ASK {
+  ?erdoes rdf:type foaf:Person .
+  ?erdoes foaf:name "Paul Erdoes"^^xsd:string .
+  {
+    ?document dc:creator ?erdoes .
+    ?document dc:creator ?author .
+    ?document2 dc:creator ?author .
+    ?document2 dc:creator ?author2 .
+    ?author2 foaf:name ?name
+    FILTER (?author!=?erdoes &amp;&amp;
+            ?document2!=?document &amp;&amp;
+            ?author2!=?erdoes &amp;&amp;
+            ?author2!=?author)
+  } UNION {
+    ?document dc:creator ?erdoes .
+    ?document dc:creator ?author .
+    ?author foaf:name ?name 
+    FILTER (?author!=?erdoes)
+  }
+}',(),(), cts:collection-query("_COLLECTION_"))
+let $_ := xdmp:log("Q12b...... from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if (fn:not($result)) then xdmp:log("Q12b################ wrong from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()) else ()
+return $result (: $result should be true :) or fn:true()
+      ]]></rem-query>
+
+      <!-- Q12c -->
+      <rem-query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $result := sem:sparql("
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX person: <http://localhost/persons/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+ASK {
+  person:John_Q_Public rdf:type foaf:Person.
+}",(),(), cts:collection-query("_COLLECTION_"))
+let $_ := xdmp:log("Q12c...... from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($result) then xdmp:log("Q12c################ wrong from loop _LOOP_ in collection _COLLECTION_, in transaction " || xdmp:transaction()) else ()
+return fn:not($result) (: should be false :) or fn:true()
+      ]]></rem-query>
+
+
+      <rem-query><![CDATA[
+xquery version "1.0-ml";
+import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
+let $pfx := sem:prefixes("art: http://localhost/publications/articles/ jour: http://localhost/publications/journals/ onto: http://swrc.ontoware.org/ontology# inprocs: http://localhost/publications/inprocs/")
+let $build := sem:rdf-builder($pfx)
+let $triples := (
+    $build("art:Journal2/1959/Article62", "rdfs:seeAlso", "http://www.distributes.tld/brining/forwardly.html"),
+    $build("art:Journal9/1975/Article340", "onto:journal", "jour:Journal9/1975"),
+    $build("art:Journal46/1984/Article1845", "dc:title", "gashing entirely mediocrities"),
+    $build("art:Journal37/1986/Article1524", "a", sem:iri("http://localhost/vocabulary/bench/Article")),
+    $build("inprocs:Proceeding1/1964/Inproceeding14", sem:iri("http://localhost/vocabulary/bench/booktitle"), "chronicling shindy espying"),
+    cts:triples(sem:iri("http://localhost/publications/inprocs/Proceeding18/1975/Inproceeding731"), (), (), "=", (), cts:collection-query("_COLLECTION_"))
+)
+let $nodes := sem:database-nodes($triples, (), cts:collection-query("_COLLECTION_"))
+let $count := fn:count($nodes)
+let $target := 13 * _LOOP_
+let $_ := xdmp:log("CRUD1........... " || $count || " from _LOOP_ in _COLLECTION_, finished in " || xdmp:elapsed-time())
+let $_ := if ($count ne $target) then (xdmp:log("CRUD1################ Count is " || $count || ", wrong from loop _LOOP_ in collection _COLLECTION_"),xdmp:log($nodes)) else ()              
+return $count eq 13 or fn:true()
+      ]]></rem-query>
+
+
+    </queries>
+  </verification>  
+</stresstest>

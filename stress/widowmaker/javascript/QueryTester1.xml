@@ -1,0 +1,24 @@
+<stresstest>
+  <testtype inserttime="true">querytester</testtype>
+  <numloops>1000</numloops>
+  <toscreen>true</toscreen>
+  <sleeptime>1</sleeptime>
+  <logoption>debug</logoption>
+  <logfilename>auto</logfilename>
+  <outputfile>auto</outputfile>
+  <operations>
+    <checkinterval>10</checkinterval>
+    <loaddir>/tmp/dummy</loaddir> 
+  </operations>
+  <verification>
+    <concurrency>5</concurrency>
+    <repeat>50</repeat>
+    <queries>
+
+      <query language="javascript"><![CDATA[
+      xdmp.log(fn.concat('count:', fn.count(fn.doc()))),true
+      ]]></query>
+
+    </queries>
+  </verification>  
+</stresstest>

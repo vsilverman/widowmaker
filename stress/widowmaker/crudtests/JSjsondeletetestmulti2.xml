@@ -1,0 +1,15 @@
+<stresstest>
+	<testtype json="true" action="delete">crudtester</testtype>
+	<numloops>1000</numloops>
+	<toscreen>true</toscreen>
+	<sleeptime>1</sleeptime>
+	<logoption>debug</logoption>
+	<logfilename>auto</logfilename>
+	<outputfile>auto</outputfile>
+	<operations>
+		 <language>javascript</language>
+		<checkinterval>1000</checkinterval>
+		<loaddir>QA_HOME/testdata/jsonStress/data1</loaddir> 
+		<multistatement batchsize="10" type="rollback"/>
+	</operations>	  
+</stresstest>

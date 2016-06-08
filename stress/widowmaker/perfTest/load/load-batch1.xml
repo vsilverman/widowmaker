@@ -1,0 +1,14 @@
+<stresstest>
+	<testtype perf="true">loadtester</testtype>
+	<numloops>5</numloops>
+	<toscreen>true</toscreen>
+	<sleeptime>1</sleeptime>
+	<logoption>info</logoption>
+	<logfilename>auto</logfilename>
+	<outputfile>auto</outputfile>
+	<operations>
+		<checkinterval>1000</checkinterval>
+		<loaddir>QA_HOME/testdata/4.0/non-geo-bucket</loaddir> 
+		<multistatement batchsize="1" type="commit"/>
+	</operations>	  
+</stresstest>

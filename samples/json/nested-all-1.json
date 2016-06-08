@@ -1,0 +1,50 @@
+{
+"Noproblems": [{
+    "Health":[{"level":1,
+        "nutrition":[{
+            "nutritionClasses":[{
+                "className":[{
+                    "associatedfacts":[{
+                        "name":"vitamin",
+                        "dose":"",
+                        "strength":"400 mg"
+                    }],
+                    "associatedfacts2":[{
+                        "name":"protein",
+                        "dose":"",
+                        "strength":"500 mg"
+                    }]
+                }],
+                "className2":[{
+                    "associatedfacts":[{
+                        "name":"vitamin",
+                        "dose":"",
+                        "strength":"500 mg"
+                    }],
+                    "associatedfacts2":[{
+                        "name":"protein",
+                        "dose":"",
+                        "strength":"500 mg"
+                    },
+                      {
+                        "name": ["nuts","fruits", "vegetables",null],
+                        "dose":"once",
+                        "strength":[500, 300]
+                    }
+                    ]
+                }]
+            }]
+        }],
+        "exercise":[
+        { "code" : 100}, 
+        {"juices":["orange","apples",["easy breathing", "no cough",4]]},
+        {"null" : null},
+        {"boolean": true}
+        ]
+    }],
+    "Yoga":[{}],
+    "Dance":[{"one":[1,2,3,4]}]
+}]
+
+}
+

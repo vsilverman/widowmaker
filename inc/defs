@@ -1,0 +1,12 @@
+JAVAC = javac
+JAVA = java
+JAR = jar
+
+MAKE = make
+MFLAGS =
+
+JAVACFLAGS = -nowarn
+JAROPTS =
+
+RM = rm
+RMFLAGS = -rf

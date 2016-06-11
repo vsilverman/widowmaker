@@ -4,7 +4,7 @@
 # For example : You may need to update stress/widowmaker/connectInfo.xml 
 #
 #
-#  Copyright 2003-2013 MarkLogic Corporation 
+#  Copyright 2003-2016 MarkLogic Corporation 
 #
 #  Licensed under the Apache License, Version 2.0 (the "License"); 
 #  you may not use this file except in compliance with the License. 

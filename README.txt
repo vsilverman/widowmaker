@@ -24,7 +24,7 @@ This project requires you to have the following installed on your machine
  Linux, Mac, Windows
 
 2.2 Software : 
- Java 1.7 (or higher)
+ Java 1.8 (or higher)
  GNU make (or equivalent)
  MarkLogic Server (Version 8 or higher) - visit http://developer.marklogic.com/ for a free download
 

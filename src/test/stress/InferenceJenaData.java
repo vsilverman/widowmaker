@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+package test.stress;
 
 import java.lang.IllegalArgumentException;
 

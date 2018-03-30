@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// package test.sql;
+package test.sql;
 
 import java.io.File;
 import java.io.InputStream;

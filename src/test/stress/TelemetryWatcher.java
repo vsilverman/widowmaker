@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// Current instance of TelemetryWatcher class has 8 classes 
+// and 1 interface defined inside it.  
+// This goes against usual Best Practicies
+// TelemetryWatcher class should be split in several files.
 
 
 package test.stress;
